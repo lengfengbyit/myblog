@@ -13,6 +13,8 @@ class AdminCommon extends Controller {
 
 	protected $req;
 
+	protected $initDefaultField = [];
+
 	public function __construct(Request $req){
 
 		parent::__construct($req);
@@ -22,6 +24,7 @@ class AdminCommon extends Controller {
 		$this->ignore_action = [
 			'login','logout'
 		];
+
 
 
 		//判断是否登录
@@ -69,7 +72,7 @@ class AdminCommon extends Controller {
 
 		if(!isPost()){
 
-			$info = $model->initField(['status'=>1]);
+			$info = $model->initField($this->initDefaultField);
 
 			$this->assign('url',url('add'));
 			$this->assign('info',$info);

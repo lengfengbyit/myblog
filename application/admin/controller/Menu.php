@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use think\Validate;
+use think\Request;
 
 use app\common\controller\AdminCommon;
 
@@ -11,6 +12,22 @@ use app\common\controller\AdminCommon;
  */
 class Menu extends AdminCommon{
 
+	//前置操作
+	protected $beforeActionList = [
+
+		//在执行add函数前，先执行initDefaultField函数
+		'initDefaultField' => ['only'=>'add']
+	];
+
+	/**
+	 * 为初始化属性赋默认值
+	 * @return [type] [description]
+	 */
+	protected function initDefaultField(){
+
+		$this->initDefaultField = ['status'=>1,'sort'=>255];
+	}
+	
 	public function index(){
 
 		$type = I('type',0,'intval');
@@ -42,7 +59,9 @@ class Menu extends AdminCommon{
 	 */
 	public function editGetBefore($model){
 
+		$type = I('type',0,'intval');
 		$list = $model->all(['p_mid'=>0]);
+		$this->assign('type',$type);
 		$this->assign('list',$list);
 	}
 

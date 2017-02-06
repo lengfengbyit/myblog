@@ -12,7 +12,7 @@ class Menu extends Common{
 	 */
 	public function getMenuTree($condition){
 
-		$list = $this->where($condition)->order('level','asc')->select();
+		$list = $this->where($condition)->order(array('level'=>'asc','sort'=>'desc'))->select();
 
 		$res = [];
 		foreach ($list as $k => $item) {
