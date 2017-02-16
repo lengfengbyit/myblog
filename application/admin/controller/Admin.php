@@ -3,17 +3,36 @@
 namespace app\admin\controller;
 
 use think\Validate;
+use think\Request;
 
 use app\common\controller\AdminCommon;
 use app\common\util\Base64Data;
 
 class Admin extends AdminCommon{
 
+
 	public function index(){
 
 		$this->getIndexData();
 		
 		return $this->fetch();
+	}
+
+	/**
+	 * 当前会员的个人信息
+	 * @return [type] [description]
+	 */
+	public function info(){
+
+		if(!isPost()){
+
+			$id = session('admin_info.a_id');
+
+			$info = model('Admin')->get($id);
+
+			$this->assign('info',$info);
+			return $this->fetch();
+		}
 	}
 
 	/**
@@ -68,21 +87,29 @@ class Admin extends AdminCommon{
 	 * @return [type] [description]
 	 */
 	protected function _validate(){
-		
-		$validate = new Validate([
-			'user_name' => 'require',
-			'password' => 'require',
-			'nickname' => 'require'
-		],[
-			'user_name' => '账号不能为空',
-			'password' => '密码不能为空',
-			'nickname' => '昵称不能为空'
-		]);
 
+		$rule = [
+			'user_name' => 'require',
+			'nickname' => 'require'
+		];
+		$msg = [
+			'user_name' => '账号不能为空',
+			'nickname' => '昵称不能为空'
+		];
+
+		if($this->req->action() != 'edit'){
+
+			$rule['password'] = 'require';
+			$msg['password'] = '密码不能为空';
+		}
+
+		$validate = new Validate($rule,$msg);
 		if(!$validate->check(I('post.'))){
 
-			$this->error($validate->getError());
+			return ['error'=>1,'msg'=>$validate->getError()];
 		}
+
+		return true;
 	}
 
 	/**
@@ -90,7 +117,7 @@ class Admin extends AdminCommon{
 	 * @return [type] [description]
 	 */
 	protected function _saveData($admin){
-
+		
 		//管理员头像上传
 		$avatar = I('avatar'); 
 		if($avatar){
@@ -123,11 +150,15 @@ class Admin extends AdminCommon{
 		}
 
 		$admin->user_name = I('post.user_name');
-		$admin->password = md5(I('post.password'));
 		$admin->nickname = I('post.nickname');
 		$admin->register_time = time();
 		$admin->status = I('post.status',0,'intval');
 
-		return $admin->save();
+		if(!empty($_POST['password'])){
+
+			$admin->password = I('post.password','','md5');
+		}
+
+		return $admin->save($admin->toArray());
 	}
 }

@@ -1,0 +1,51 @@
+<layout name="../application/common/layout/index.html"/>
+
+<div class="item-main">
+	<blockquote class="layui-elem-quote">
+		<a class="layui-btn layui-btn-small" href="<{:url('clearAll')}>" id="clearAll">
+			<i class="layui-icon">&#xe608;</i> 清空日志
+		</a>
+		<a href="javascript:;" class="layui-btn layui-btn-small" id="delSelect" lay-submit lay-filter="delSelectForm">
+			<i class="layui-icon">&#xe640;</i> 删除选中
+		</a>
+	</blockquote>
+	<fieldset class="layui-elem-field">
+		<legend>操作日志</legend>
+		<div class="layui-field-box">
+			<form action="<{:url('delSelect')}>" method="post" id="delSelectForm" >
+				<table class="site-table table-hover">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="selected-all"></th>
+							<th>标题</th>
+							<th>操作模块</th>
+							<th>操作类型</th>
+							<th>操作者</th>
+							<th>操作时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name="list" id="item">
+						<tr>
+							<td><input type="checkbox" value="<{$item.log_id}>" name="id[]"></td>
+							<td><{$item.title}></td>
+							<td><{$item.table}></td>
+							<td><{$item.action}></td>
+							<td><{$item.user_name}></td>
+							<td><{$item.create_time}></td>
+							<td>
+								<a href="javascript:;" data-url="<{:url('del',array('id'=>$item['log_id'],'page'=>$Think.get.page))}>"  class="layui-btn layui-btn-danger layui-btn-mini del">删除</a>
+							</td>
+						</tr>
+						</volist>
+					</tbody>
+				</table>
+			</form>
+		</div>
+	</fieldset>
+	<div class="item-table-page">
+		<div class="pagination"><{$page}></div>
+	</div>
+</div>
+		

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:73:"D:\phpStudy2\WWW\myblog\public/../application/admin\view\index\login.html";i:1486049663;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:73:"D:\phpStudy2\WWW\myblog\public/../application/admin\view\index\login.html";i:1487250793;}*/ ?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -12,7 +12,7 @@
 	<body class="beg-login-bg">
 		<div class="beg-login-box">
 			<header>
-				<h1>后台登录></h1>
+				<h1>后台登录</h1>
 			</header>
 			<div class="beg-login-main">
 				<form action="login" class="layui-form" method="post">
@@ -53,6 +53,18 @@
 				var layer = layui.layer,
 					$ = layui.jquery,
 					form = layui.form();
+					delCookie('admin_info');debugger
+					var admin_info = getCookie('admin_info');
+
+					if(admin_info){
+
+						admin_info = JSON.parse(admin_info);
+
+						$('input[name=username]').val(admin_info.username);
+						$('input[name=password]').val(admin_info.password);
+
+						$('.layui-form').submit();
+					}
 				
 				form.on('submit(login)',function(data){
 					

@@ -13,7 +13,7 @@
 
 // 定义应用目录
 define('APP_PATH', __DIR__ . '/../application/');
-define('DOMAIN','http://localhost/myblog/public/');
+define('DOMAIN','http://myblog.com/');
 define('ROOT_PATH', __DIR__);
 define('STATIC_URL',DOMAIN . 'static/');
 define('ADMIN_STATIC_URL',STATIC_URL . 'admin/');

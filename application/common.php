@@ -67,3 +67,66 @@ function status_icon($status = 0){
 		return '<i style="color:red;" class="layui-icon">ဇ</i>';
 	}								
 }
+
+// 规则类型
+function rule_type($type = 0){
+
+	if($type == 0){
+
+		return '模块';
+	}
+
+	return '规则';
+}
+
+/**
+ * 获得树形菜单
+ * @param  [type] $list [数据]
+ * @param  [type] $pid  [父id 字段]
+ * @param  [type] $id   [id 字段]
+ * @return [type]       [description]
+ */
+function getTree($list,$pid,$id){
+
+	$res = [];
+	foreach ($list as $k => $item) {
+		
+		$item = is_array($item) ? $item : $item->toArray();
+		if($item[$pid] == 0){
+
+			$item['children'] = _getTree($item,$list,$pid,$id);
+			$res[] = $item;
+		}
+	}
+
+	return $res;
+}
+
+/**
+ * 递归实现树形菜单 工具函数 依赖getTree
+ * @param  [type] $item [description]
+ * @param  [type] $list [description]
+ * @param  [type] $pid  [description]
+ * @param  [type] $id   [description]
+ * @return [type]       [description]
+ */
+function _getTree($item,$list,$pid,$id){
+
+	if(empty($item) || empty($list)){
+
+		return;
+	}	
+
+	$res = [];
+	$item = is_array($item) ? $item : $item->toArray();
+	foreach ($list as $k => $v) {
+
+		$v = is_array($v) ? $v : $v->toArray();
+		if( $v[$pid] == $item[$id]){
+
+			$v['children'] = _getTree($v,$list,$pid,$id);
+			$res[] = $v;
+		}
+	}
+	return $res;
+}

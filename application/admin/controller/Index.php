@@ -38,12 +38,8 @@ class Index extends AdminCommon{
     		
     		if($admin){
 
-    			$admin->last_login_time = time();
-    			$admin->last_login_ip = req('ip');
-    			$admin->login_count += 1;
-
-    			$admin->save();
-                
+    			$this->_saveData($admin);
+                                    
                 session('admin_info',$admin->getData());
 
     			$this->success('登录成功','index');
@@ -68,7 +64,7 @@ class Index extends AdminCommon{
      * 登录验证
      * @return [type] [description]
      */
-    private function _validate(){
+    protected function _validate(){
 
     	$validate = new Validate([
     		'username' => 'require',
@@ -81,5 +77,19 @@ class Index extends AdminCommon{
 
     		$this->error($validate->getError());
     	}
+    }
+
+    /**
+     * 保存数据
+     * @param  [type] $model [description]
+     * @return [type]        [description]
+     */
+    protected function _saveData($admin){
+
+        $admin->last_login_time = time();
+        $admin->last_login_ip = req('ip');
+        $admin->login_count += 1;
+
+        return $admin->save();
     }
 }

@@ -5,27 +5,39 @@ namespace app\common\controller;
 use think\Controller;
 use think\Request;
 
-class AdminCommon extends Controller {
+abstract class AdminCommon extends Controller {
 
 
 	//不做登录判断的action
-	protected $ignore_action; 
+	protected $ignore_action = ['login','logout']; 
+
+	// 忽略不存在模型的控制器
+	protected $ignore_controller = ['Index'];
 
 	protected $req;
 
-	protected $initDefaultField = [];
+	protected $initDefaultField = ['status'=>1,'sort'=>255];
+
+	protected $model;
+
+	//日志类型
+	protected $logType = [
+		'add' => '添加',
+		'edit' => '编辑',
+		'del' => '删除',
+		'delselect' => '删除选中',
+		'clearall' => '清空',
+		'createnav' => '创建菜单'
+	];
+
+	//日志状态
+	protected $logStatus = ['success'=>'成功','error'=>'失败'];
 
 	public function __construct(Request $req){
 
 		parent::__construct($req);
 
 		$this->req = $req;
-
-		$this->ignore_action = [
-			'login','logout'
-		];
-
-
 
 		//判断是否登录
 		if( !session('?admin_info') && 
@@ -34,20 +46,30 @@ class AdminCommon extends Controller {
 			$this->redirect('Index/login');
 		}
 
+		$controller = $this->req->controller();
+
+		if(!$this->model && !in_array($controller, $this->ignore_controller)){
+
+			$this->model = model($controller);
+		}
 	}
+
+	//列表页面
+	abstract public function index();
+
+	//表单数据校验
+	abstract protected function _validate();
+
+	//保存数据
+	abstract protected function _saveData($model);
 
 	/**
 	 * 获得index页面 数据
 	 * @return [type] [description]
 	 */
 	protected function getIndexData($condition=[],$order='',$model='',$page=10){
-
-		if($model == ''){
-
-			$model = $this->req->controller();
-		}
 	
-		$list = model($model)->where($condition)->order($order)->paginate($page);
+		$list = $this->model->where($condition)->order($order)->paginate($page);
 		$page = $list->render();
 		
 		$this->assign('list',$list);
@@ -60,7 +82,7 @@ class AdminCommon extends Controller {
 	 */
 	protected function ajaxReturn($jsonData=[]){
 
-		echo json_encode($jsonData);
+		echo json_encode($jsonData);die;
 	}	
 
 	/**
@@ -68,7 +90,7 @@ class AdminCommon extends Controller {
 	 */
 	public function add(){
 		
-		$model = model($this->req->controller());
+		$model = $this->model;
 
 		if(!isPost()){
 
@@ -77,26 +99,27 @@ class AdminCommon extends Controller {
 			$this->assign('url',url('add'));
 			$this->assign('info',$info);
 
-			if(method_exists($this, 'addGetBefore')){
-
-				$this->addGetBefore($model);
-			}
+			$this->trigger('formGetBefore');
 
 			return $this->fetch('form');
 		}else{
 			
-			$this->_validate();
-			
-			if(method_exists($this, 'addPostBefore')){
+			$res = $this->trigger('_validate');
+			if( $res !== true){
 
-				$this->addPostBefore($model);
+				$this->ajaxReturn($res);
 			}
+			
+			$this->trigger('addPostBefore',$model);
 
 			if($this->_saveData($model)){
 
+				$id = $model->getData($model->getPk());
+				$this->addLog($id,'success');
 				$this->ajaxReturn(['error'=>0,'msg'=>'添加成功']);
 			}else{
 
+				$this->addLog(false,'error');
 				$this->ajaxReturn(['error'=>1,'msg'=>'添加失败,请重新添加']);
 			}
 		}
@@ -106,12 +129,12 @@ class AdminCommon extends Controller {
 	 * 编辑操作
 	 * @return [type] [description]
 	 */
-	public function edit(){
+	public function edit(){ 
 
 		$id = I('id',0,'intval');
-		$model = model($this->req->controller());
+		$model = $this->model;
 		$info = $model->get($id);
-
+		
 		if(!isPost()){
 
 			if($id <= 0){
@@ -119,23 +142,27 @@ class AdminCommon extends Controller {
 				$this->ajaxReturn(['error'=>1,'msg'=>'数据不存在']);
 			}
 
-			if(method_exists($this, 'editGetBefore')){
-
-				$this->editGetBefore($model);
-			}
+			$this->trigger('formGetBefore',$model);
 
 			$this->assign('url',url('edit',array('id'=>$id)));
 			$this->assign('info',$info);
 			return $this->fetch('form');
 		}else{
 
-			$this->_validate();
+			// $res = $this->_validate();
+			$res = $this->trigger('_validate');
+			if( $res !== true){
 
+				$this->ajaxReturn($res);
+			}
+			
 			if($this->_saveData($info)){
 
+				$this->addLog($id,'success');
 				$this->ajaxReturn(['error'=>0,'msg'=>'编辑成功']);
 			}else{
 
+				$this->addLog($id,'error');
 				$this->ajaxReturn(['error'=>1,'msg'=>'编辑失败']);
 			}
 		}
@@ -155,23 +182,22 @@ class AdminCommon extends Controller {
 			$this->error('请求参数错误');
 		}
 
-		$model = model($this->req->controller());
+		$model = $this->model;
 
-		$haAfter = method_exists($this, 'delAfter');
-		if($haAfter){
+		$modelData = null;
+		if(method_exists($this, 'delAfter')){
 			$modelData = $model->get($id);
 		}
 		
 		if($model->get($id)->delete()){
 
-			if($haAfter){
-
-				$this->delAfter($modelData);
-			}
-
+			$this->trigger('delAfter',$modelData);
+			
+			$this->addLog($id,'success');
 			$this->ajaxReturn(['error'=>0,'msg'=>'删除成功']);
 		}else{
 
+			$this->addLog($id,'error');
 			$this->ajaxReturn(['error'=>1,'msg'=>'删除失败']);
 		}
 	}
@@ -191,13 +217,12 @@ class AdminCommon extends Controller {
 			$this->error('没有选中数据');
 		}
 
-		$model = model($this->req->controller());
+		$model = $this->model;
 
 		$condition = $model->getPk() . " in ({$ids})";
 
-		$hasAfter = method_exists($this, 'delSelectAfter');
-
-		if($hasAfter){
+		$list = null;
+		if(method_exists($this, 'delSelectAfter')){
 
 			$list = $model->all($ids);
 		}
@@ -205,16 +230,59 @@ class AdminCommon extends Controller {
 
 		if($res){
 
-			if($hasAfter){
+			$this->trigger('delSelectAfter',$list);
 
-				$this->delSelectAfter($list);
-			}
-
+			$this->addLog($ids,'success');
 			$this->success('删除成功','index');
 		}else{
 
+			$this->addLog($ids,'error');
 			$this->error('删除失败');
 		}
 	}
 
+	/**
+	 * 添加日志 
+	 * @param [type] $data [description]
+	 */
+	protected function addLog($id,$res){
+
+		$action = $this->req->action();
+		$statusText = $this->logStatus[$res];
+		$actionText = $this->logType[$action];
+
+		$title = $actionText;
+		if($id){
+
+			$title .= "数据，id:" . $id . "," ;
+		}
+		$title .= $statusText;
+
+		$data = [
+			'title' => $title,
+			'table' => $this->req->controller(),
+			'action' => $action,
+			'admin_id' => session('admin_info.a_id'),
+			'create_time' => time()
+		];
+
+		return model('Log')->insert($data);
+	}
+
+	/**
+	 * 触发事件
+	 * @param  [type] $method [方法名]
+	 * @param  [type] $param  [参数]
+	 * @return [type]         [description]
+	 */
+	protected function trigger($method,$param = null){
+
+		if(method_exists($this, $method)){
+
+			return $this->$method($param
+				);
+		}
+
+		return false;
+	}
 }

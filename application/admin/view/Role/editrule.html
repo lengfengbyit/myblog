@@ -1,0 +1,119 @@
+<layout name="../application/common/layout/index.html"/>
+<style type="text/css">
+	.rule-box{
+		display: block;
+		width: 130px;
+		float: left;
+		line-height: 25px;
+		border: 1px solid #ccc;
+		position: relative;
+		padding: 10px;
+		margin: 10px;
+	}
+	.rule-box .title{
+		text-align: left;
+		position: absolute;
+		top: -15px;
+		background: white;
+		width: 80px;
+		left: 5px;
+		padding-left: 5px;	
+	}
+	.rule-box .title input[type=checkbox]{
+		position: relative;
+		top: 2px;
+	}
+	.clear{
+		clear: both;
+	}
+</style>
+<div class="item-main">
+	<fieldset class="layui-elem-field">
+		<legend>
+			<input type="checkbox"  id="all">
+			全部选择
+		</legend>
+		<form action="<{:url('editrule')}>" method="post" id="dataForm">
+		<div class="layui-field-box">
+			<volist name="list" id="item">
+				<ul class="rule-box">
+					<li class="title">
+						<input type="checkbox" class="rule-group" title="<{$item.title}>">
+						<{$item.title}>
+					</li>
+					<volist name="item.children" id="rule">
+						<li>
+							<input type="checkbox" name="rules[<{$rule.id}>]" title="<{$rule.title}>">
+							<{$rule.title}>
+						</li>
+					</volist>
+				</ul>
+			</volist>
+			<div class="clear"></div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<input type="hidden" name="id" value="<{$id}>">
+				<button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+		</form>
+	</fieldset>
+</div>
+<script>
+	layui.config({
+		dir: ADMIN_STATIC_URL + 'plugins/layui/'
+	}).use(['jquery'],function(){
+
+		var $ = layui.jquery;
+
+		// 分组全选
+		$('.rule-group').click(function(event) {
+			var _self = this;
+			$(this).parents('ul').find('input[type=checkbox]').each(function(){
+
+				this.checked = _self.checked;
+			})
+
+			allIsChecked(); 
+		});
+
+		//选中所有
+		$('#all').click(function(event) {
+			
+			var _self = this;
+			$('.layui-field-box').find('input[type=checkbox]').each(function(){
+
+				this.checked = _self.checked;
+			})	
+		});
+
+		$('.layui-field-box input[type=checkbox]').not('.rule-group').click(function(event) {
+			
+			var flag = true;//标识分组是否全选
+
+			if($(this).parents('ul').find('input[type=checkbox]').not('.rule-group').not('input:checked').size() > 0){
+
+				flag = false;
+			}
+			//分组选中
+			$(this).parents('ul').find('.rule-group').get(0).checked = flag;
+
+			allIsChecked();
+		});
+
+		// 判断是否选中全选按钮
+		function allIsChecked(){
+
+			if($('.layui-elem-field li input[type=checkbox]').not('.rule-group').not('input:checked').size() == 0){
+				
+				$('#all').get(0).checked = true;
+			}else{
+
+				$('#all').get(0).checked = false;
+			}
+		}
+	});
+loadFormScript();
+</script>

@@ -14,45 +14,10 @@ class Menu extends Common{
 
 		$list = $this->where($condition)->order(array('level'=>'asc','sort'=>'desc'))->select();
 
-		$res = [];
-		foreach ($list as $k => $item) {
-			
-			$item = is_array($item) ? $item : $item->toArray();
-			if($item['p_mid'] == 0){
-
-				$item['children'] = $this->_getMenuTree($item,$list);
-				$res[] = $item;
-			}
-		}
+		$res = getTree($list,'p_mid','m_id');
 
 		return $res;
 	}
-
-	/**
-	 * 递归查询，获得数据结构
-	 * @param  [type] $item [description]
-	 * @param  [type] $list [description]
-	 * @return [type]       [description]
-	 */
-	private function _getMenuTree($item,$list){
-
-		if(empty($item) || empty($list)){
-
-			return;
-		}	
-
-		$res = [];
-		$item = is_array($item) ? $item : $item->toArray();
-		foreach ($list as $k => $v) {
-
-			$v = is_array($v) ? $v : $v->toArray();
-			if( $v['p_mid'] == $item['m_id']){
-
-				$v['children'] = $this->_getMenuTree($v,$list);
-				$res[] = $v;
-			}
-		}
-		return $res;
-	}
+	
 
 }

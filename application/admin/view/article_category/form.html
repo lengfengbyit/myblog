@@ -1,0 +1,45 @@
+<br/>
+<form class="layui-form" method="post" action="<{$url}>" enctype="multipart/form-data" id="dataForm">
+	<div class="layui-form-item">
+		<label class="layui-form-label">所属分类<{$info.pid}></label>
+		<div class="layui-input-block">
+			<select name="pid" id="">
+				<option value="0">--请选择--</option>
+				<volist name="list" id="item">
+					<option value="<{$item.ac_id}>" 
+						<eq name="info.pid" value="$item.ac_id">selected</eq>
+					 ><{$item.cate_name}></option>
+				</volist>
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">分类名称</label>
+		<div class="layui-input-block">
+			<input type="text" name="cate_name" placeholder="请输入分类名称" autocomplete="off" class="layui-input" lay-verify="required" value="<{$info.cate_name}>">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">排序</label>
+		<div class="layui-input-block">
+			<input type="text" name="sort" placeholder="请输入一个数字" autocomplete="off" class="layui-input"  value="<{$info.sort}>">
+			<small class="form-tips">(降序)</small>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">是否可用</label>
+		<div class="layui-input-block">
+			<input type="checkbox" name="status" value="<{$info.status}>" lay-skin="switch" <eq name="info.status" value="1">checked</eq> title="是否可用">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<input type="hidden" name="id" value="<{$info.ac_id}>">
+			<button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary" id="reset">重置</button>
+		</div>
+	</div>
+</form>
+<script>
+loadFormScript();
+</script>

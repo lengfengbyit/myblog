@@ -1,8 +1,8 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"D:\phpStudy2\WWW\myblog\public/../application/admin\view\menu\form.html";i:1486297322;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:71:"D:\phpStudy2\WWW\myblog\public/../application/admin\view\menu\form.html";i:1486481862;}*/ ?>
 <br/>
 <form class="layui-form" method="post" action="<?php echo $url; ?>" enctype="multipart/form-data" id="dataForm">
 	<div class="layui-form-item">
-		<label class="layui-form-label">所属菜单<?php echo $info['p_mid']; ?></label>
+		<label class="layui-form-label">所属菜单</label>
 		<div class="layui-input-block">
 			<select name="p_mid" id="">
 				<option value="0">--请选择--</option>

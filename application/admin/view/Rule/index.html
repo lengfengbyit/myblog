@@ -1,0 +1,62 @@
+<layout name="../application/common/layout/index.html"/>
+<div class="item-main">
+	<blockquote class="layui-elem-quote">
+		<a href="javascript:;" class="layui-btn layui-btn-small form" data-url="<{:url('add')}>" data-title="添加规则" id="add">
+			<i class="layui-icon">&#xe608;</i> 添加规则
+		</a>
+		<a href="javascript:;" class="layui-btn layui-btn-small" id="delSelect">
+			<i class="layui-icon">&#xe640;</i> 删除选中
+		</a>
+	</blockquote>
+	<fieldset class="layui-elem-field">
+		<legend>规则列表</legend>
+		<div class="layui-field-box">
+			<form action="<{:url('delSelect')}>" method="post" id="delSelectForm">
+				<table class="site-table table-hover">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="selected-all"></th>
+							<th>规则名称</th>
+							<th>规则唯一标识</th>
+							<th>表达式</th>
+							<th>类型</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name="list" id="item">
+						<tr>
+							<td><input type="checkbox" value="<{$item.id}>" name="id[]"></td>
+							<td style="text-align: left;"><{$item.title}></td>
+							<td><{$item.name}></td>
+							<td><{$item.condition}></td>
+							<td><{$item.type | rule_type}></td>
+							<td><{$item.status | status_icon }></td>
+							<td>
+								<a href="javascript:;" data-url="<{:url('edit',array('id'=>$item['id']))}>" data-title="编辑规则" class="layui-btn layui-btn-mini form">编辑</a>
+								<a href="javascript:;" data-url="<{:url('del',array('id'=>$item['id'],'page'=>$Think.get.page))}>"  class="layui-btn layui-btn-danger layui-btn-mini del">删除</a>
+							</td>
+						</tr>
+						<volist name='item.children' id="child">
+							<tr>
+								<td><input type="checkbox" value="<{$child.id}>" name="id[]"></td>
+								<td style="text-align: left;">&nbsp;|_<{$child.title}></td>
+								<td><{$child.name}></td>
+								<td><{$child.condition}></td>
+								<td><{$child.type | rule_type}></td>
+								<td><{$child.status | status_icon }></td>
+								<td>
+									<a href="javascript:;" data-url="<{:url('edit',array('id'=>$child['id']))}>" data-title="编辑规则" class="layui-btn layui-btn-mini form">编辑</a>
+									<a href="javascript:;" data-url="<{:url('del',array('id'=>$child['id'],'page'=>$Think.get.page))}>"  class="layui-btn layui-btn-danger layui-btn-mini del">删除</a>
+								</td>
+							</tr>
+						</volist>
+						</volist>
+					</tbody>
+				</table>
+			</form>
+		</div>
+	</fieldset>
+</div>
+		

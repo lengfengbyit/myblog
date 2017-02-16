@@ -1,0 +1,61 @@
+<br/>
+<form class="layui-form" method="post" action="<{$url}>" id="dataForm">
+	<div class="layui-form-item">
+		<label class="layui-form-label">标题</label>
+		<div class="layui-input-block">
+			<input type="text" name="title" placeholder="请输入文章标题" autocomplete="off" class="layui-input" lay-verify="required" value="<{$info.title}>">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">是否显示</label>
+		<div class="layui-input-block">
+			<input type="checkbox" name="status" value="<{$info.status}>" lay-skin="switch" <eq name="info.status" value="1">checked</eq> title="是否显示">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">排序</label>
+		<div class="layui-input-block">
+			<input type="text" name="sort" value="<{$info.sort}>" placeholder="请输入一个数字" autocomplete="off" class="layui-input" value="<{$info.sort}>">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">内容</label>
+		<div class="layui-input-block">
+			<textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"><{$info.content}></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<input type="hidden" name="id" value="<{$info.p_id}>">
+			<button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary" id="reset">重置</button>
+		</div>
+	</div>
+</form>
+<script>
+
+loadFormScript();
+</script>
+<script>
+	layui.use(['form', 'layedit', 'laydate'], function() {
+		var form = layui.form(),
+			layer = layui.layer,
+			layedit = layui.layedit,
+			laydate = layui.laydate;
+
+		//创建一个编辑器
+		var editIndex = layedit.build('LAY_demo_editor');
+		//自定义验证规则
+		form.verify({
+			title: function(value) {
+				if(value.length < 5) {
+					return '标题至少得5个字符啊';
+				}
+			},
+			content: function(value) {
+				layedit.sync(editIndex);
+			}
+		});
+		
+	});
+</script>

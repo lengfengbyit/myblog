@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"D:\phpStudy2\WWW\myblog\public/../application/admin\view\admin\form.html";i:1486287122;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:72:"D:\phpStudy2\WWW\myblog\public/../application/admin\view\admin\form.html";i:1486781551;}*/ ?>
 <br/>
 <form class="layui-form" method="post" action="<?php echo $url; ?>" enctype="multipart/form-data" id="dataForm">
 	<div class="layui-form-item">
@@ -10,7 +10,8 @@
 	<div class="layui-form-item">
 		<label class="layui-form-label">密码</label>
 		<div class="layui-input-block">
-			<input type="text" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" lay-verify="required" value="<?php echo $info['password']; ?>">
+			<input type="text" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" " value="">
+			<samll>(为空则不修改)</samll>
 		</div>
 	</div>
 	<div class="layui-form-item">

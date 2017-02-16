@@ -1,0 +1,51 @@
+<br/>
+<form class="layui-form" method="post" action="<{$url}>" enctype="multipart/form-data" id="dataForm">
+	<div class="layui-form-item">
+		<label class="layui-form-label">所属模块</label>
+		<div class="layui-input-block">
+			<select name="pid" id="">
+				<option value="0">--请选择--</option>
+				<volist name="list" id="item">
+					<option value="<{$item.id}>" 
+						<eq name="info.pid" value="$item.id">selected</eq>
+					 ><{$item.title}></option>
+				</volist>
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">规则名称</label>
+		<div class="layui-input-block">
+			<input type="text" name="title" placeholder="请输入规则名称" autocomplete="off" class="layui-input" lay-verify="required" value="<{$info.title}>">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">唯一标识</label>
+		<div class="layui-input-block">
+			<input type="text" name="name" placeholder="请输入规则唯一标识" autocomplete="off" class="layui-input" value="<{$info.name}>">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">规则表达式</label>
+		<div class="layui-input-block">
+			<input type="text" name="condition" placeholder="请输入规则表达式" autocomplete="off" class="layui-input" value="<{$info.condition}>">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">状态</label>
+		<div class="layui-input-block">
+			<input type="checkbox" name="status" value="<{$info.status}>" lay-skin="switch" <eq name="info.status" value="1">checked</eq> title="状态">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<input type="hidden" name="id" value="<{$info.id}>">
+			<button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary" id="reset">重置</button>
+		</div>
+	</div>
+</form>
+<script>
+
+loadFormScript();
+</script>

@@ -12,22 +12,6 @@ use app\common\controller\AdminCommon;
  */
 class Menu extends AdminCommon{
 
-	//前置操作
-	protected $beforeActionList = [
-
-		//在执行add函数前，先执行initDefaultField函数
-		'initDefaultField' => ['only'=>'add']
-	];
-
-	/**
-	 * 为初始化属性赋默认值
-	 * @return [type] [description]
-	 */
-	protected function initDefaultField(){
-
-		$this->initDefaultField = ['status'=>1,'sort'=>255];
-	}
-	
 	public function index(){
 
 		$type = I('type',0,'intval');
@@ -45,24 +29,30 @@ class Menu extends AdminCommon{
 	 * get 请求，输出页面之前执行
 	 * @param [type] $model [description]
 	 */
-	public function addGetBefore($model){
+	public function formGetBefore($model){
 
 		$type = I('type',0,'intval');
-		$list = $model->all(['p_mid'=>0,'type'=>$type]);
+		$list = $model->where(['p_mid'=>0,'type'=>$type])->order('level asc,sort desc,m_id asc')->select();
 		$this->assign('type',$type);
 		$this->assign('list',$list);
 	}
 
 	/**
-	 * get 请求，输出页面之前执行
-	 * @param [type] $model [description]
+	 * 更新菜单链接
+	 * @return [type] [description]
 	 */
-	public function editGetBefore($model){
+	public function updateMenuUrl(){
 
-		$type = I('type',0,'intval');
-		$list = $model->all(['p_mid'=>0]);
-		$this->assign('type',$type);
-		$this->assign('list',$list);
+		$list = model('Menu')->all();
+
+		$oldDomain = 'http://localhost/myblog/public/';
+		$newDomain = DOMAIN; 
+		foreach ($list as $k => $val) {
+			
+			$list[$k]['url'] = str_replace($oldDomain, $newDomain, $val['url']);
+			$list[$k]->save();
+		}
+
 	}
 
 	/**
@@ -109,9 +99,11 @@ class Menu extends AdminCommon{
 		$filename = ROOT_PATH . '\static\admin\datas\nav.js';
 		if(file_put_contents($filename, $navStr) > 0){
 
+			$this->addLog(false,'success');
 			$this->ajaxReturn(['error'=>0,'msg'=>'创建成功']);
 		}else{
 
+			$this->addLog(false,'error');
 			$this->ajaxReturn(['error'=>1,'msg'=>'创建失败']);
 		}
 	}
@@ -131,8 +123,10 @@ class Menu extends AdminCommon{
 
 		if(!$validate->check(I('post.'))){
 
-			$this->ajaxReturn(['error'=>1,'msg'=>$validate->getError()]);
+			return ['error'=>1,'msg'=>$validate->getError()];
 		}
+
+		return true;
 	}
 
 	/**
