@@ -42,7 +42,8 @@ class Index extends AdminCommon{
                                     
                 session('admin_info',$admin->getData());
 
-    			$this->success('登录成功','index');
+    			// $this->success('登录成功','index');
+                $this->redirect('index');
     		}else{
 
     			$this->error('用户名或密码错误，请重新输入');

@@ -26,6 +26,9 @@
 	.clear{
 		clear: both;
 	}
+	.rule-box input[type=checkbox]{
+		display: inline-block;
+	}
 </style>
 <div class="item-main">
 	<fieldset class="layui-elem-field">
@@ -33,7 +36,7 @@
 			<input type="checkbox"  id="all">
 			全部选择
 		</legend>
-		<form action="<{:url('editrule')}>" method="post" id="dataForm">
+		<form action="<{:url('editrule')}>" method="post" id="dataForm" class="layui-form">
 		<div class="layui-field-box">
 			<volist name="list" id="item">
 				<ul class="rule-box">
@@ -43,9 +46,15 @@
 					</li>
 					<volist name="item.children" id="rule">
 						<li>
-							<input type="checkbox" name="rules[<{$rule.id}>]" title="<{$rule.title}>">
+							<input type="checkbox" name="rules[<{$rule.id}>]" value="<{$rule.id}>" title="<{$rule.title}>" <in name="rule.id" value="$rules">checked</in>>
 							<{$rule.title}>
 						</li>
+						<volist name="rule.children" id="ruleItem">
+							<li>
+								<input type="checkbox" name="rules[<{$ruleItem.id}>]" value="<{$ruleItem.id}>" title="<{$ruleItem.title}>" <in name="ruleItem.id" value="$rules">checked</in>>
+								&nbsp;|_<{$ruleItem.title}>
+							</li>
+						</volist>
 					</volist>
 				</ul>
 			</volist>
@@ -62,11 +71,13 @@
 	</fieldset>
 </div>
 <script>
+
 	layui.config({
 		dir: ADMIN_STATIC_URL + 'plugins/layui/'
 	}).use(['jquery'],function(){
 
 		var $ = layui.jquery;
+		window.form_no_render = true;
 
 		// 分组全选
 		$('.rule-group').click(function(event) {
@@ -91,18 +102,27 @@
 
 		$('.layui-field-box input[type=checkbox]').not('.rule-group').click(function(event) {
 			
-			var flag = true;//标识分组是否全选
-
-			if($(this).parents('ul').find('input[type=checkbox]').not('.rule-group').not('input:checked').size() > 0){
-
-				flag = false;
-			}
-			//分组选中
-			$(this).parents('ul').find('.rule-group').get(0).checked = flag;
-
+			groupIsChecked();
 			allIsChecked();
 		});
 
+		clearFormRender();
+		groupIsChecked();
+		allIsChecked();
+
+		// 清除layui的表单渲染效果	
+		function clearFormRender(){
+			var timer = setInterval(function(){
+				var items = $('.layui-form-checkbox');
+				if(items.length > 0){
+					$(items).each(function(){
+						$(this).remove();
+					});
+					clearInterval(timer);
+				}
+				
+			},100);
+		}
 		// 判断是否选中全选按钮
 		function allIsChecked(){
 
@@ -114,6 +134,21 @@
 				$('#all').get(0).checked = false;
 			}
 		}
+		//判断是否选中分组按钮
+		function groupIsChecked(){
+
+			$('.rule-group').each(function(index, el) {
+				
+				if($(this).parents('ul').find('input[type=checkbox]').not('input:checked').not(this).size() == 0){
+
+					this.checked = true;
+				}else{
+
+					this.checked = false;
+				}
+			});
+		}
 	});
 loadFormScript();
+
 </script>

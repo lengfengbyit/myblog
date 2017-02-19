@@ -9,6 +9,11 @@
 					<option value="<{$item.id}>" 
 						<eq name="info.pid" value="$item.id">selected</eq>
 					 ><{$item.title}></option>
+					 <volist name="item.children" id="child">
+						<option value="<{$child.id}>" 
+							<eq name="info.pid" value="$child.id">selected</eq>
+						>&nbsp;&nbsp;|_<{$child.title}></option>
+					 </volist>
 				</volist>
 			</select>
 		</div>
@@ -17,12 +22,6 @@
 		<label class="layui-form-label">规则名称</label>
 		<div class="layui-input-block">
 			<input type="text" name="title" placeholder="请输入规则名称" autocomplete="off" class="layui-input" lay-verify="required" value="<{$info.title}>">
-		</div>
-	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label">唯一标识</label>
-		<div class="layui-input-block">
-			<input type="text" name="name" placeholder="请输入规则唯一标识" autocomplete="off" class="layui-input" value="<{$info.name}>">
 		</div>
 	</div>
 	<div class="layui-form-item">

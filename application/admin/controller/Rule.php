@@ -21,7 +21,8 @@ class Rule extends AdminCommon{
 
 	protected function formGetBefore(){
 
-		$list = $this->model->where('type',0)->select();
+		// $list = $this->model->where('type',0)->select();
+		$list = $this->model->getMenuTree();
 
 		$this->assign('list',$list);
 	}
@@ -34,12 +35,6 @@ class Rule extends AdminCommon{
 		$msg = [
 			'title' => '请输入规则名称'
 		];
-
-		if(I('post.pid',0,'intval') > 0){
-
-			$rule['name'] = 'require';
-			$msg['name'] = '请输入规则唯一标识';
-		}
 
 		$validate = new Validate($rule,$msg);
 
@@ -56,7 +51,7 @@ class Rule extends AdminCommon{
 		$data = [
 			'title'     => I('post.title','','trim'),
 			'status'    => I('post.status',1,'intval'),
-			'name'      => I('post.name','','trim'),
+			'name'      => I('post.condition','','trim'),
 			'condition' => I('post.condition','','trim'),
 			'pid'       => I('post.pid',0,'intval'),
 			'type'      => 0,

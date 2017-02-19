@@ -29,7 +29,7 @@
 							<td><{$item.title}></td>
 							<td><{$item.status | status_icon }></td>
 							<td>
-								<a href="javascript:;" data-url="<{:url('editRule',array('id'=>$item['id']))}>" data-title="规则授权" class="layui-btn layui-btn-mini form">规则授权</a>
+								<a href="javascript:;" data-url="<{:url('editRule',array('id'=>$item['id']))}>" data-title="分配权限" class="layui-btn layui-btn-mini form">分配权限</a>
 								<a href="javascript:;" data-url="<{:url('edit',array('id'=>$item['id']))}>" data-title="编辑角色" class="layui-btn layui-btn-mini form">编辑</a>
 								<a href="javascript:;" data-url="<{:url('del',array('id'=>$item['id'],'page'=>$Think.get.page))}>"  class="layui-btn layui-btn-danger layui-btn-mini del">删除</a>
 							</td>

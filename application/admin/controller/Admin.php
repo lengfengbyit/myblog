@@ -14,6 +14,7 @@ class Admin extends AdminCommon{
 	public function index(){
 
 		$this->getIndexData();
+
 		
 		return $this->fetch();
 	}
@@ -27,12 +28,19 @@ class Admin extends AdminCommon{
 		if(!isPost()){
 
 			$id = session('admin_info.a_id');
-
 			$info = model('Admin')->get($id);
 
 			$this->assign('info',$info);
 			return $this->fetch();
 		}
+	}
+
+	protected function formGetBefore(){
+
+		// 获得角色列表
+		$roles = model('role')->all();
+		
+		$this->assign('roles',$roles);
 	}
 
 	/**
@@ -128,7 +136,7 @@ class Admin extends AdminCommon{
 			];
 
 			$base64Data = new Base64Data($avatar,$rule);
-			$config = C('admin_config.avatar');
+			$config = C('avatar');
 			$res = $base64Data->save($config['save_path']);
 
 			if(!$res){
@@ -157,6 +165,18 @@ class Admin extends AdminCommon{
 		if(!empty($_POST['password'])){
 
 			$admin->password = I('post.password','','md5');
+		}
+
+		$role_id = I('post.role_id',0,'intval');
+		if($role_id > 0){
+
+			$data = [
+				'uid'      => $admin->a_id,
+				'group_id' => $role_id
+			];
+
+			// 保存用户权限设置
+			model('role_access')->save($data);
 		}
 
 		return $admin->save($admin->toArray());

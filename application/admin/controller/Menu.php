@@ -27,12 +27,11 @@ class Menu extends AdminCommon{
 
 	/**
 	 * get 请求，输出页面之前执行
-	 * @param [type] $model [description]
 	 */
-	public function formGetBefore($model){
+	public function formGetBefore(){
 
 		$type = I('type',0,'intval');
-		$list = $model->where(['p_mid'=>0,'type'=>$type])->order('level asc,sort desc,m_id asc')->select();
+		$list = $this->model->where(['p_mid'=>0,'type'=>$type])->order('level asc,sort desc,m_id asc')->select();
 		$this->assign('type',$type);
 		$this->assign('list',$list);
 	}
