@@ -4,6 +4,7 @@ namespace app\common\controller;
 
 use think\Controller;
 use think\Request;
+use app\common\controller\Auth;
 
 abstract class AdminCommon extends Controller {
 
@@ -46,11 +47,50 @@ abstract class AdminCommon extends Controller {
 			$this->redirect('Index/login');
 		}
 
+		// 验证访问权限
+		// $this->check_premission();
+
 		$controller = $this->req->controller();
 
 		if(!$this->model && !in_array($controller, $this->ignore_controller)){
 
 			$this->model = model($controller);
+		}
+	}
+
+	// 检查用户权限
+	private function check_premission(){
+
+		//忽略判断的规则
+		$ingore_rule = [
+			'index_main','index_login','index_logout','index_index'
+		];
+		$params = $this->req->param();
+		$controller = strtolower($this->req->controller());
+		$action = strtolower($this->req->action());
+		$rules = [
+			$controller . '_' . $action,
+		];
+		
+		if(in_array($rules[0], $ingore_rule)){
+
+			return true;
+		}
+
+		$paramStr = '';
+		foreach ($params as $key => $value) {
+			$paramStr .= '_' . $key . '_' . $value;
+		}
+		if($paramStr != ''){
+
+			$rules[] = $rules[0] . $paramStr;
+		}
+
+		$auth=new Auth();  
+		$res = $auth->check($rules,session('admin_info.a_id'),1,'rule'); 
+
+		if(!$res){
+ 			echo '权限不足，无法访问';die;
 		}
 	}
 

@@ -21,6 +21,8 @@ define('HOME_STATIC_URL',STATIC_URL . 'home/');
 define('COMMON_STATIC_URL',STATIC_URL . 'common/');
 define('UPLOAD_PATH', __DIR__ . '/static/upload/');
 define('UPLOAD_URL', STATIC_URL . 'upload/');
+define('CONF_PATH',__DIR__ . '/../config/');
+define('RUNTIME_PATH', ROOT_PATH . '/../runtime/');
 
 // 加载框架引导文件
 require __DIR__ . '/../thinkphp/start.php';

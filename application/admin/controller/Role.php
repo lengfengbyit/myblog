@@ -24,9 +24,12 @@ class Role extends AdminCommon{
 
 		if(!isPost()){
 
-			$list = model('rule')->getMenuTree();
 			$id = I('id');
+			$list = model('rule')->getMenuTree();
+			$info = model('role')->get($id);
+			$rules = explode(',', $info['rules']);
 
+			$this->assign('rules',$rules);
 			$this->assign('id',$id);
 			$this->assign('list',$list);
 			return $this->fetch();
@@ -42,10 +45,10 @@ class Role extends AdminCommon{
 			
 			if($model->save()){
 
-				echo ['error'=>0,'msg'=>'授权成功'];
+				$this->ajaxReturn(['error'=>0,'msg'=>'授权成功']);
 			}else{
 
-				echo ['error'=>1,'msg'=>'授权失败'];
+				$this->ajaxReturn(['error'=>1,'msg'=>'授权失败']);
 			}
 		}
 	}
