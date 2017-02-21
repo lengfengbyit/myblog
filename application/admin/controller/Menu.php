@@ -31,6 +31,11 @@ class Menu extends AdminCommon{
 	public function formGetBefore(){
 
 		$type = I('type',0,'intval');
+		$id = I('id',0,'intval'); 
+		$info = $this->model->get(I('id'))->toArray();
+		if($info && $id >0){
+			$type = $info['type'];
+		}
 		$list = $this->model->where(['p_mid'=>0,'type'=>$type])->order('level asc,sort desc,m_id asc')->select();
 		$this->assign('type',$type);
 		$this->assign('list',$list);

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:4:{s:72:"D:\phpStudy2\WWW\myblog\public/../application/home\view\index_index.html";i:1487478692;s:38:"../application/home/layout/layout.html";i:1487478756;s:43:"../application/home/view/public_header.html";i:1487478273;s:43:"../application/home/view/public_footer.html";i:1487478267;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:5:{s:72:"D:\phpStudy2\WWW\myblog\public/../application/home\view\index_index.html";i:1487601995;s:38:"../application/home/layout/layout.html";i:1487601886;s:43:"../application/home/view/public_header.html";i:1487601946;s:44:"../application/home/view/public_navmenu.html";i:1487602010;s:43:"../application/home/view/public_footer.html";i:1487478267;}*/ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
 <head>
@@ -16,20 +16,25 @@
 </head>
 
 
-
 <body class="multi default">
 <div id="divAll">
 	<div id="divPage">
 	<div id="divMiddle">
 		<div id="divTop">
-			<h1 id="BlogTitle"><a href="#"><img src="<?php echo HOME_STATIC_URL; ?> images/LOGO.gif" alt="你我网" onMouseover="shake(this,'onmouseout')" /></a></h1>
-			<!-- <h3 id="BlogSubTitle">www.Youmew.com</h3> -->
+			<h1 id="BlogTitle"><a href="#"><img src="<?php echo HOME_STATIC_URL; ?>images/LOGO.gif" alt="你我网" onMouseover="shake(this,'onmouseout')" /></a></h1>
+			<h3 id="BlogSubTitle">myblog.com</h3>
 		</div>
+		
+		<!-- 导航菜单 -->
 		<div id="divNavBar">
-<ul>
-<li><a href="index.html">首页</a></li><li><a href="article.html" title="感悟生活点滴">大生活</a></li><li><a href="list.html" title="光与影的艺术">光影斑斓</a></li><li><a href="search.html" title="一切有为法，如梦幻泡影，如露亦如电，应作如是观。">如是观</a></li><li><a href="tags.html" target="_blank" title="还是以前的圈圈微博！">圈圈说</a></li><li><a href="#" title="沟通从这里开始">留言本</a></li>
-</ul>
-		</div>
+    <ul>
+    	<?php if(is_array($navMenu) || $navMenu instanceof \think\Collection || $navMenu instanceof \think\Paginator): $i = 0; $__LIST__ = $navMenu;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$item): $mod = ($i % 2 );++$i;?>
+        <li><a href="<?php echo $item['url']; ?>"><?php echo $item['menu_name']; ?></a></li>
+        <?php endforeach; endif; else: echo "" ;endif; ?>
+    </ul>
+</div>
+
+
 		<div id="divMain">
 <div class="post multi-post cate4 auth1">
 	<h4 class="post-date">2016年3月17日</h4>
