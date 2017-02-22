@@ -6,43 +6,49 @@
 </style>
 <div class="admin-main">
 	<fieldset class="layui-elem-field">
-		<legend>个人信息</legend>
+		<legend>网站设置</legend>
 		<div class="layui-field-box">
 			<form class="layui-form" method="post" action="<{:url('setting')}>" enctype="multipart/form-data" id="dataForm">
 				<div class="layui-form-item">
 					<label class="layui-form-label">站点名称</label>
 					<div class="layui-input-block">
-						<input type="text" name="user_name" placeholder="请输入账号" autocomplete="off" class="layui-input"  value="">
+						<input type="text" name="site_name" placeholder="请输入账号" autocomplete="off" class="layui-input"  value="<{$info.site_name}>">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">网站logo</label>
 					<div class="layui-input-block">
-						<input type="file"  placeholder="请选择头像上传" class="upload_img">
-						<input type="hidden" name="site_logo">
+						<notempty name="info.site_logo">
+							<img src="<{$Think.UPLOAD_URL}>site/<{$info.site_logo}>"  alt="" style="max-width:50px;max-height:50px;">
+						</notempty>
+						<input type="file"  placeholder="请选择网站logo上传" class="upload_img">
+						<input type="hidden" name="site_logo" value="">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">底部版权信息</label>
 					<div class="layui-input-block">
-						<textarea name="site_coypright"  placeholder="请输入底部版权信息" class="layui-textarea"></textarea>
+						<textarea name="site_coypright"  placeholder="请输入底部版权信息" class="layui-textarea"><{$info.site_coypright}></textarea>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label for="" class="layui-form-label">游客留言</label>
 					<div class="layui-input-block">
-						<input type="checkbox" lay-skin="switch" value="1" checked name="visitor_message">
+						<input type="checkbox" lay-skin="switch" value="1" name="visitor_message"
+							<eq name="info.visitor_message" value="1">checked</eq> 
+						>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label for="" class="layui-form-label">网站是否开启</label>
 					<div class="layui-input-block">
-						<input type="checkbox" lay-skin="switch" value="1" checked name="site_open" id="">
+						<input type="checkbox" lay-skin="switch" value="1" name="site_open" 
+							<eq name="info.site_open" value="1">checked</eq> 
+						>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<div class="layui-input-block">
-						<input type="hidden" name="id" value="">
 						<button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
 						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 					</div>
