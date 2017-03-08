@@ -6,6 +6,15 @@ use app\common\model\Common;
 
 class ArticleCategory extends Common{
 
+    /**
+     * 一对多关联
+     * @return [type] [description]
+     */
+    public function article(){
+
+        return $this->hasMany('article','a_id','ac_id');
+    }
+
 	/**
 	 * 获得菜单树
 	 * @return [type] [description]

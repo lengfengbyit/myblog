@@ -20,7 +20,13 @@ class Article extends AdminCommon{
 
 	public function index(){
 
-		$this->getIndexData();
+		// $this->getIndexData();
+
+		$list = $this->model->getArtFullList(['tag_mode'=>1]);
+		$page = $list->render();
+		
+		$this->assign('list',$list);
+		$this->assign('page',$page);
 
 		return $this->fetch();
 	}
