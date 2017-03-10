@@ -1,0 +1,133 @@
+<layout name="../application/home/layout/layout.html"/>
+<body class="single">
+<div id="divAll">
+	<div id="divPage">
+	<div id="divMiddle">
+
+		<!-- 导航菜单 -->
+		<include file="../application/home/view/public_navmenu.html" />
+
+		<div id="divMain">
+            <div class="post single-post cate2 auth1">
+            	<div class="post-nav">
+            		<notempty name="preInfo">
+            			<a class="l" href="<{:url('index/article',array('id'=>$preInfo['a_id']))}>" title="<{$preInfo.title}>">« 上一篇</a>
+            		</notempty>
+            		<notempty name="nextInfo">
+            			<a class="r" href="<{:url('index/article',array('id'=>$nextInfo['a_id']))}>" title="<{$nextInfo.title}>">下一篇 »</a>
+            		</notempty>
+            	</div>
+            	<h4 class="post-date"><{$info.create_time}></h4>
+            	<h2 class="post-title"><{$info.title}></h2>
+            	<div class="post-body"><{$info.content}></div>
+            	<h5 class="post-tags">Tags: 
+            		<span class="tags">
+            			<volist name="info.tags" id="tag" key="id">
+            				<a href="<{:url('index/index',array('t_id'=>$id))}>"><{:strtoupper($tag)}></a>&nbsp;&nbsp;
+            			</volist>
+            		</span>
+            	</h5>
+            	<h6 class="post-footer">
+            		分类:<{$info.cate_name}> | 评论:<{$info->comments()->count()}> | 浏览:<span id="spn75"><{$info.view_num}></span>
+            	    <br />
+                    <!-- AD BEGIN -->
+                    <br />
+            		<div style="width:660px;" align="center">
+            		</div>
+                    <!-- AD END -->
+                </h6>
+            </div>
+            <ul class="msg mutuality">
+                <li class="tbname">相关文章:</li>
+                <li class="msgarticle">
+                    <volist name="otherArtList" id="art">
+                        <p><a  href="<{:url('index/article',array('id'=>$art['a_id']))}>"><{$art.title}></a>&nbsp;&nbsp;(<{$art.create_time}>)</p>
+                    </volist>
+                </li>
+            </ul>
+
+            <ul  class="msg msghead">
+                <li class="tbname">留言列表:</li>
+            </ul>
+            <volist name="info.comments" id="item">
+                <ul class="msg" >
+                    <li class="msgname">
+                        <img class="avatar" src="/static/home/image/default_user_avatar.png" alt="" width="32"/>&nbsp;
+                        <span class="commentname">
+                            <a href="" rel="nofollow" target="_blank">任务易</a>
+                        </span><br/>
+                        <small>
+                            &nbsp;发布于&nbsp;2016-6-23 9:43:54&nbsp;&nbsp;
+                            <span class="revertcomment">
+                                <a href="#comment" onclick="RevertComment('1475')">回复该留言</a>
+                            </span>
+                        </small>
+                    </li>
+                    <li class="msgarticle">“戒”博主的思想高深，我等不知哪里去理解<!--rev1475--><a style="display:none;" id="AjaxCommentEnd1475"></a></li>
+                </ul>
+            </volist>
+
+            <div class="post" id="divCommentPost">
+                <p class="posttop">
+                    <a name="comment">发表留言:</a>
+                    <small><a rel="nofollow" id="cancel-reply" href="#divCommentPost" style="display:none;">取消回复</a></small>
+                </p>
+                <form id="frmSumbit" target="_self" method="post" action="<{:url('index/post')}>" >
+                <input type="hidden" name="a_id"  value="<{$info.a_id}>" />
+                <p>
+                    <input type="text" name="nick_name" id="inpName" class="text" value="" size="28" tabindex="1" /> 
+                    <label for="inpName">名称（必填）</label>
+                </p>
+                <p><input type="text" name="email" id="inpEmail" class="text" value="" size="28" tabindex="2" /> <label for="inpEmail">邮箱</label></p>
+                <p><input type="text" name="site_url" id="inpHomePage" class="text" value="" size="28" tabindex="3" /> <label for="inpHomePage">网站链接</label></p>
+
+                <p><input type="text" name="verify" id="inpVerify" class="text" value="" size="28" tabindex="4" /> <label for="inpVerify">验证（必填）</label> 
+                <img style="border:1px solid silver;width:60px;height:20px;" src="<{:captcha_src()}>" alt="" title=""/></p>
+
+                <p><label for="txaArticle">正文（必填）(留言最长字数:1000)</label></p>
+                <p><textarea name="txaArticle" id="txaArticle" onchange="GetActiveText(this.id);" onclick="GetActiveText(this.id);" onfocus="GetActiveText(this.id);" class="text" cols="50" rows="4" tabindex="5" ></textarea></p>
+                <p><input name="btnSumbit" type="submit" tabindex="6" value="提交" onclick="JavaScript:return VerifyMessage()" class="button" /> <input type="checkbox" name="chkRemember" value="1" id="chkRemember" /> <label for="chkRemember">记住我,下次回复时不用重新输入个人信息</label></p>
+                </form>
+                <p class="postbottom">◎欢迎参与讨论，请在这里发表您的看法、交流您的观点。</p>
+                <script language="JavaScript" type="text/javascript">LoadRememberInfo();</script>
+            </div>	
+        </div>
+        <div id="divSidebar">
+
+        <dl class="function" id="divSearchPanel">
+            <dt class="function_t">搜索</dt>
+            <dd class="function_c">
+            <div>
+                <div style="padding:0.5em 0 0.5em 1em;">
+                    <form method="post" action="<{:url('index/index')}>">
+                        <input type="text" name="keyword" value="<{$keyword|default=''}>" id="edtSearch" size="12"> 
+                        <input type="submit" value="提交" name="btnPost" id="btnPost">
+                    </form>
+                </div>
+            </div>
+            </dd>
+        </dl>
+
+<dl class="function" id="divComments">
+<dt class="function_t">最新留言</dt>
+<dd class="function_c">
+<ul><li style="text-overflow:ellipsis;"><a href="#post/77.html#cmt1474" title="2016-6-20 9:31:36 post by 任务易">要钱还是要脸，这是这个社会应该思考的</a></li><li style="text-overflow:ellipsis;"><a href="#post/8.html#cmt1472" title="2016-6-16 10:31:18 post by 母婴B2b">感谢博主的分享～</a></li><li style="text-overflow:ellipsis;"><a href="#post/67.html#cmt1470" title="2016-6-14 13:27:07 post by 母婴B2b">感谢博主的分享~</a></li><li style="text-overflow:ellipsis;"><a href="#guestbook.html#cmt1469" title="2016-6-13 20:47:03 post by BeautifulDays">博客导航栏图片设计的不错啊，前来逛逛。</a></li><li style="text-overflow:ellipsis;"><a href="#post/76.html#cmt1468" title="2016-6-12 11:19:36 post by 夏日博客">有的赢得了人生，有的输得一踏糊涂。</a></li><li style="text-overflow:ellipsis;"><a href="#post/75.html#cmt1467" title="2016-6-9 16:34:35 post by 斯托克笔记">戒什么？</a></li><li style="text-overflow:ellipsis;"><a href="#post/6.html#cmt1466" title="2016-5-30 14:25:48 post by 母婴B2b">感谢博主分享~</a></li><li style="text-overflow:ellipsis;"><a href="#post/76.html#cmt1464" title="2016-5-26 18:20:30 post by themebetter">终于搞定新主题tob上线，过来看看，有梦</a></li><li style="text-overflow:ellipsis;"><a href="#guestbook.html#cmt1462" title="2016-5-24 15:59:25 post by 猫先生">曾经来过</a></li><li style="text-overflow:ellipsis;"><a href="#post/77.html#cmt1454" title="2016-5-20 16:01:45 post by 软膜天花">第一次来，网站做的很不错</a></li></ul>
+</dd>
+</dl><dl class="function" id="divMisc">
+<dt class="function_t">分享到：</dt>
+<dd class="function_c">
+<ul><li><img src="#zb_system/image/logo/weixin.jpg" height="110" width="110" border="0" alt="你我网微信公众平台" title="微信扫一扫，关注圈圈的最新消息。" /></li><li><!-- Baidu Button BEGIN --><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a><a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a><a title="分享到百度贴吧" href="#" class="bds_tieba" data-cmd="tieba"></a><a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a></div><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["sqq","weixin","qzone","tsina","tieba","douban"],"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script><!-- Baidu Button END --></li><li><a href="#feed.asp" target="_blank"><img src="#zb_system/image/logo/rss.png" height="31" width="88" border="0" alt="订阅本站的 RSS 2.0 新闻聚合" /></a></li></ul>
+</dd>
+</dl>
+
+        </div>
+        <div id="divBottom">
+          <h3 id="BlogCopyRight">陕ICP备11002139号-1</h3>
+            <h4 id="BlogPowerBy">Powered By <a href="http://www.rainbowsoft.org/" title="RainbowSoft Studio Z-Blog" target="_blank">Z-Blog</a>　本站遵循<a rel="license" target="_blank" title="署名-非商业性使用-禁止演绎 3.0 中国大陆许可协议" href="http://creativecommons.org/licenses/by-nc-nd/3.0/cn/"> CC BY-NC-ND 3.0 CN协议 </a>。</h4>
+        </div><div class="clear"></div>
+    </div><div class="clear"></div>
+    </div><div class="clear"></div>
+</div>
+
+</body>
+</html>

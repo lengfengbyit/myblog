@@ -7,6 +7,16 @@ use app\common\model\Common;
 class Article extends Common{
 	
     /**
+     * 定义全局查询范围 ，查询的时候自动合并该查询条件
+     * @param  [type] $query [description]
+     * @return [type]        [description]
+     */     
+    public function base($query){
+
+        $query->where('is_show',1);
+    }
+
+    /**
      * 文章类型一对一关联
      * @return [type] [description]
      */
@@ -46,7 +56,11 @@ class Article extends Common{
      */
     public function getArtFullList($param=[]){
 
-        $articleList = $this->where(['is_show'=>1])->order('a_id desc')->paginate();
+        $condition = ['is_show'=>1];
+        if(isset($param['condition'])){
+            $condition = array_merge($condition,$param['condition']);
+        }
+        $articleList = $this->where($condition)->order('a_id desc')->paginate();
 
         // 标签获取模式 ： 0：数组模式，1:字符串模式
         $tag_mode = isset($param['tag_mode']) ? intval($param['tag_mode']) : 0;
@@ -65,5 +79,27 @@ class Article extends Common{
         return $articleList;
     }
 
+    /**
+     * 获得文章详情（包括关联信息）
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function getFullInfoById($id){
 
+        $info = $this->get($id);
+        $info['tags'] = $info->tags();
+        $info['cate_name'] = $info->artCate['cate_name'];
+        return $info;
+    }   
+
+    /**
+     * 根据当前文章获得其他类似的文章
+     * @param  [type] $art [description]
+     * @return [type]      [description]
+     */
+    public function getOtherArtList($art,$field="a_id,title,create_time",$page=10){
+
+        $condition = "a_id <> {$art->a_id} and (ac_id = {$art->ac_id} or tag_ids = '{$art->tag_ids}')";
+        return $this->field($field)->where($condition)->limit($page)->select(); 
+    }
 }

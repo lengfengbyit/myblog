@@ -287,39 +287,6 @@ function SaveRememberInfo() {
 
 
 
-//*********************************************************
-// 目的：    输出UBB
-// 输入：    无
-// 返回：    无
-//*********************************************************
-function ExportUbbFrame() {
-
-	return false;
-
-	if(!objActive){objActive="txaArticle"};
-
-	document.write("<p id=\"UbbFrame\" style=\"display:none;\"></p>");
-
-	document.write("<p>");
-
-	document.write("<a alt=\"\" onmousedown=\"InsertText(objActive,ReplaceText(objActive,'[URL]','[/URL]'),true);\" style=\"padding:2px;cursor:pointer;\">[URL]</a>  ");
-	document.write("<a alt=\"\" onmousedown=\"InsertText(objActive,ReplaceText(objActive,'[URL=http://]','[/URL]'),true);\" style=\"padding:2px;cursor:pointer;\">[URL2]</a>  ");
-	document.write("<a alt=\"\" onmousedown=\"InsertText(objActive,ReplaceText(objActive,'[EMAIL]','[/EMAIL]'),true);\" style=\"padding:2px;cursor:pointer;\">[EMAIL]</a>  ");
-	document.write("<a alt=\"\" onmousedown=\"InsertText(objActive,ReplaceText(objActive,'[EMAIL=@]','[/EMAIL]'),true);\" style=\"padding:2px;cursor:pointer;\">[EMAIL2]</a>  ");
-	document.write("<a alt=\"\" onmousedown=\"InsertText(objActive,ReplaceText(objActive,'[B]','[/B]'),true);\" style=\"padding:2px;cursor:pointer;\">[B]</a>  ");
-	document.write("<a alt=\"\" onmousedown=\"InsertText(objActive,ReplaceText(objActive,'[I]','[/I]'),true);\" style=\"padding:2px;cursor:pointer;\">[I]</a>  ");
-	document.write("<a alt=\"\" onmousedown=\"InsertText(objActive,ReplaceText(objActive,'[U]','[/U]'),true);\" style=\"padding:2px;cursor:pointer;\">[U]</a>  ");
-	document.write("<a alt=\"\" onmousedown=\"InsertText(objActive,ReplaceText(objActive,'[S]','[/S]'),true);\" style=\"padding:2px;cursor:pointer;\">[S]</a>  ");
-	document.write("<a alt=\"\" onmousedown=\"InsertText(objActive,ReplaceText(objActive,'[QUOTE]','[/QUOTE]'),true);\" style=\"padding:2px;cursor:pointer;\">[QUOTE]</a>  ");
-
-	document.write("<u><a style=\"cursor:pointer;text-align:right;\" onclick=\"InsertUbbFace();if(document.getElementById('UbbFrame').style.display=='none'){document.getElementById('UbbFrame').style.display='block';}else{document.getElementById('UbbFrame').style.display='none'};this.style.display='none'\">"+str06+"</a></u> ");
-
-	document.write("</p>");
-}
-//*********************************************************
-
-
-
 
 //*********************************************************
 // 目的：    插入表情图片HTML代码
@@ -527,7 +494,6 @@ function RevertComment(i) {
 // 目的：    
 //*********************************************************
 function LoadFunction(name){
-
 
 	strBatchInculde+="mod_"+name+"="+name+","
 

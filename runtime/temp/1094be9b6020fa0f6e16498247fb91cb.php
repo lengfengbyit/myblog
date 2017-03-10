@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:5:{s:72:"D:\phpStudy2\WWW\myblog\public/../application/home\view\index_index.html";i:1488959456;s:38:"../application/home/layout/layout.html";i:1487733496;s:43:"../application/home/view/public_header.html";i:1487733496;s:44:"../application/home/view/public_navmenu.html";i:1487733496;s:43:"../application/home/view/public_footer.html";i:1487566584;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:5:{s:72:"D:\phpStudy2\WWW\myblog\public/../application/home\view\index_index.html";i:1489114620;s:38:"../application/home/layout/layout.html";i:1487733496;s:43:"../application/home/view/public_header.html";i:1487733496;s:44:"../application/home/view/public_navmenu.html";i:1489050187;s:43:"../application/home/view/public_footer.html";i:1487566584;}*/ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
 <head>
@@ -20,13 +20,17 @@
 <div id="divAll">
 	<div id="divPage">
 	<div id="divMiddle">
-		<div id="divTop">
-			<h1 id="BlogTitle"><a href="#"><img src="<?php echo HOME_STATIC_URL; ?>images/LOGO.gif" alt="你我网" onMouseover="shake(this,'onmouseout')" /></a></h1>
-			<h3 id="BlogSubTitle">myblog.com</h3>
-		</div>
 		
 		<!-- 导航菜单 -->
-		<div id="divNavBar">
+		<div id="divTop">
+    <h1 id="BlogTitle">
+        <a href="#">
+            <img src="/static/home/images/LOGO.gif" alt="你我网" onMouseover="shake(this,'onmouseout')" />
+        </a>
+    </h1>
+    <h3 id="BlogSubTitle">www.myblog.com</h3>
+</div>
+<div id="divNavBar">
     <ul>
     	<?php if(is_array($navMenu) || $navMenu instanceof \think\Collection || $navMenu instanceof \think\Paginator): $i = 0; $__LIST__ = $navMenu;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$item): $mod = ($i % 2 );++$i;?>
         <li><a href="<?php echo $item['url']; ?>"><?php echo $item['menu_name']; ?></a></li>
@@ -39,7 +43,7 @@
 			<?php if(is_array($articleList) || $articleList instanceof \think\Collection || $articleList instanceof \think\Paginator): $i = 0; $__LIST__ = $articleList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$art): $mod = ($i % 2 );++$i;?>
 			<div class="post multi-post cate4 auth1">
 				<h4 class="post-date"><?php echo $art['create_time']; ?></h4>
-				<h2 class="post-title"><a href="#post/77.html"><?php echo $art['title']; ?></a></h2>
+				<h2 class="post-title"><a href="<?php echo url('index/article',array('id'=>$art['a_id'])); ?>"><?php echo $art['title']; ?></a></h2>
 				<div class="post-body"><p><?php echo $art['summary']; ?></p></div>
 				<h5 class="post-tags">Tags: 
 					<span class="tags">
@@ -51,7 +55,7 @@
 				<h6 class="post-footer">
 					分类:<?php echo $art['cate_name']; ?> | 评论:<?php echo $art->comments()->count(); ?> | 
 					浏览:<span id="spn77"><?php echo $art['view_num']; ?></span>
-					| <a href="<?php echo url('index/detial',array('id'=>$art['a_id'])); ?>">阅读全文 > </a>
+					| <a href="<?php echo url('index/article',array('id'=>$art['a_id'])); ?>">阅读全文 > </a>
 				</h6>
 			</div> 
 			<?php endforeach; endif; else: echo "" ;endif; ?>
@@ -64,10 +68,10 @@
 				<dd class="function_c">
 					<div>
 					    <div style="padding:0.5em 0 0.5em 1em;">
-					        <form method="post" action="#zb_system/cmd.asp?act=Search">
-					            <input type="text" name="edtSearch" id="edtSearch" size="12" />
-					            <input type="submit" value="提交" name="btnPost" id="btnPost" />
-					        </form>
+					        <form method="post" action="<?php echo url('index/index'); ?>">
+		                        <input type="text" name="keyword" value="<?php echo (isset($keyword) && ($keyword !== '')?$keyword:''); ?>" id="edtSearch" size="12"> 
+		                        <input type="submit" value="提交" name="btnPost" id="btnPost">
+		                    </form>
 					    </div>
 					</div>
 				</dd>
@@ -89,7 +93,11 @@
 				<dt class="function_t">最新留言</dt>
 				<dd class="function_c">
 					<ul>
-						<li style="text-overflow:ellipsis;"><a href="#post/76.html#cmt1492" title="2016-7-14 20:22:16 post by 卢松松博客">说的很不错呢！</a></li>
+						<?php if(is_array($commentList) || $commentList instanceof \think\Collection || $commentList instanceof \think\Paginator): $i = 0; $__LIST__ = $commentList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$item): $mod = ($i % 2 );++$i;?>
+							<li style="text-overflow:ellipsis;">	
+								<a href="javascript:void(0)" title="<?php echo $item['create_time']; ?> post by 卢松松博客"><?php echo $item['content']; ?></a>
+							</li>
+						<?php endforeach; endif; else: echo "" ;endif; ?>
 					</ul>
 				</dd>
 			</dl>
