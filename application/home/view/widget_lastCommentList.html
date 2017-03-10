@@ -1,0 +1,11 @@
+<dl class="function" id="divComments">
+    <dt class="function_t">最新留言</dt>
+    <dd class="function_c">
+        <ul>
+            <volist name="commentList" id="item">
+                <li style="text-overflow:ellipsis;">
+                <a href="<{:url('index/article',array('id'=>$item['a_id']))}>#cmt<{$item.c_id}>" title="<{$item.create_time}> post by <{$item.nick_name}>"><{$item.content|mb_substr=0,20,'utf-8'}></a></li>
+            </volist>
+        </ul>
+    </dd>
+</dl>

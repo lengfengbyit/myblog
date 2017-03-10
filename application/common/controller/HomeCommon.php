@@ -11,10 +11,22 @@ class HomeCommon extends Controller{
 
 		parent::__construct();
 
-		// dump(config('template'));die;
 		// 导航菜单
 		$navMenu = model('menu')->getNavMenu();
 
+        // 网站信息
+        $siteInfo = Model('site')->getSiteInfo();
+    
+        $this->assign('siteInfo',$siteInfo);
 		$this->assign('navMenu',$navMenu);
 	}
+
+    /**
+     * 返回ajax 数据
+     * @return [type] [description]
+     */
+    protected function ajaxReturn($jsonData=[]){
+
+        echo json_encode($jsonData);die;
+    }   
 }

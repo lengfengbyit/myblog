@@ -58,18 +58,10 @@
 					</ul>
 				</dd>
 			</dl>
-			<dl class="function" id="divComments">
-				<dt class="function_t">最新留言</dt>
-				<dd class="function_c">
-					<ul>
-						<volist name="commentList" id="item">
-							<li style="text-overflow:ellipsis;">	
-								<a href="javascript:void(0)" title="<{$item.create_time}> post by 卢松松博客"><{$item.content}></a>
-							</li>
-						</volist>
-					</ul>
-				</dd>
-			</dl>
+
+			<!-- 最新留言 -->
+       		<{:widget('Comment/lastCommentList')}>
+
 			<dl class="function" id="divLinkage">
 				<dt class="function_t">友情链接</dt>
 				<dd class="function_c">
@@ -82,35 +74,6 @@
 					</ul>
 				</dd>
 			</dl>
-			<dl class="function" id="divMisc">
-				<dt class="function_t">分享到：</dt>
-				<dd class="function_c">
-					<ul>
-						<li><img src="images/weixin.jpg" height="110" width="110" border="0" alt="你我网微信公众平台" title="微信扫一扫，关注圈圈的最新消息。" /></li>
-					</ul>
-				</dd>
-			</dl>
 		</div>
-		<div id="divBottom">
-          <h3 id="BlogCopyRight">陕ICP备11002139号-1</h3>
-			<h4 id="BlogPowerBy">Powered By <a href="http://www.rainbowsoft.org/" title="RainbowSoft Studio Z-Blog" target="_blank">Z-Blog</a>　本站遵循<a rel="license" target="_blank" title="署名-非商业性使用-禁止演绎 3.0 中国大陆许可协议" href="http://creativecommons.org/licenses/by-nc-nd/3.0/cn/"> CC BY-NC-ND 3.0 CN协议 </a>。</h4>
-		</div><div class="clear"></div>
-		</div>
-		<div class="clear"></div>
-	</div>
-	<div class="clear"></div>
-</div>
-<!-- dd BEGIN -->
-<script language="JavaScript1.2">
-var typ=["marginTop","marginLeft"],rangeN=10,timeout=0; 
-function shake(o,end){ 
-	var range=Math.floor(Math.random()*rangeN); 
-	var typN=Math.floor(Math.random()*typ.length); 
-	o["style"][typ[typN]]=""+range+"px"; 
-	var shakeTimer=setTimeout(function(){shake(o,end)},timeout); 
-	o[end]=function(){clearTimeout(shakeTimer)}; 
-} 
-  </script>
-<!-- dd END -->
-</body>
-</html><!-- 16ms -->
+		
+		

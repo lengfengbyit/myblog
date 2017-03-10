@@ -31,7 +31,7 @@ class Article extends Common{
      */
     public function comments(){
 
-        return $this->hasMany('comment','c_id');
+        return $this->hasMany('comment','a_id')->order('create_time desc');
     }
 
     /**

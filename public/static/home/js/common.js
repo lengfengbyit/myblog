@@ -117,11 +117,9 @@ function GetCookie(sName) {
 function VerifyMessage() {
 
 	var strName=$("#inpName").val();
-	var strEmail=$("#inpEmail").val();
-	var strHomePage=$("#inpHomePage").val();
 	var strArticle=$("#txaArticle").length>0?$("#txaArticle").val():$("#inpArticle").val();
 	var strFormAction=$("#frmSumbit").attr("action");
-	var intRevID=$("#inpRevID").val()==""?0:$("#inpRevID").val();
+    var verify = $('#inpVerify').val();
 
 	if(strName==""){
 		alert(str01);
@@ -135,17 +133,11 @@ function VerifyMessage() {
 		}
 	}
 
-	if(strEmail==""){
-		//alert(str01);
-		//return false;
-	}
-	else{
-		re = new RegExp("^[\\w-]+(\\.[\\w-]+)*@[\\w-]+(\\.[\\w-]+)+$");
-		if (!re.test(strEmail)){
-			alert(str02);
-			return false;
-		}
-	}
+    if(verify == ''){
+
+        alert('请输入图片验证码');return false;
+    }
+
 
 	if(typeof(strArticle)=="undefined"){
 		alert(str03);
@@ -182,39 +174,27 @@ function VerifyMessage() {
 
 	$.post(strFormAction,
 		{
-		"inpAjax":true,
-		"inpID":$("#inpId").val(),
-		"inpVerify":($("#inpVerify").length>0?$("#inpVerify").val():""),
-		"inpEmail":strEmail,
-		"inpName":strName,
-		"inpArticle":strArticle,
-		"inpHomePage":strHomePage,
-		"inpRevID":intRevID
+    		"aid":$("#inpId").val(),
+            "rid":$('#inpRevID').val(),
+    		"verify":($("#inpVerify").length>0?$("#inpVerify").val():""),
+    		"name":strName,
+    		"content":strArticle,
 		},
 		function(data){
-			var s =data;
-			if((s.search("faultCode")>0)&&(s.search("faultString")>0))
-			{
-				alert(s.match("<string>.+?</string>")[0].replace("<string>","").replace("</string>",""))
-			}
-			else{
-				var i=Math.round(Math.random()*1000);
-				var s =data;
-				if(intRevID==0){
-					$(s).insertBefore("#AjaxCommentEnd");
-				}else{
-					$(s).insertBefore("#AjaxCommentEnd"+intRevID);
-					window.location="#cmt"+intRevID
-				}
-				$("#divAjaxComment"+i).fadeIn("slow");
-				$("#txaArticle").val("");
-			}
-			if($("#inpVerify").length>0){
-				$("#inpVerify").val("");
-				var objImageValid=$("img[src^='"+bloghost+"zb_system/function/c_validcode.asp?name=commentvalid']");
-				objImageValid.attr("src",bloghost+"zb_system/function/c_validcode.asp?name=commentvalid"+"&random="+Math.random());
-			}
+            
+            if(typeof data == 'string'){
+                data = JSON.parse(data);
+            }			
 
+            alert(data.msg);
+            if(data.state){
+                
+                window.location.reload();
+            }else{
+
+                // 刷新验证码
+                $('#inpVerify').siblings('img').trigger('click');
+            }
 			$("#frmSumbit :submit").removeClass("loading");
 			$("#frmSumbit :submit").removeAttr("disabled");
 			$("#frmSumbit :submit").val(strSubmit);
@@ -238,16 +218,12 @@ function VerifyMessage() {
 //*********************************************************
 function LoadRememberInfo() {
 
-	var strName=GetCookie("inpName");
-	var strEmail=GetCookie("inpEmail");
-	var strHomePage=GetCookie("inpHomePage");
+	var strName=GetCookie("inpName");;
 	var bolRemember=GetCookie("chkRemember");
 
 	if(bolRemember=="true"){
 
 		if(strName){document.getElementById("inpName").value=strName;};
-		if(strEmail){document.getElementById("inpEmail").value=strEmail;};
-		if(strHomePage){document.getElementById("inpHomePage").value=strHomePage;};
 		if(bolRemember){document.getElementById("chkRemember").checked=bolRemember;};
 
 	}
@@ -270,14 +246,10 @@ function LoadRememberInfo() {
 function SaveRememberInfo() {
 
 	var strName=document.getElementById("inpName").value;
-	var strEmail=document.getElementById("inpEmail").value;
-	var strHomePage=document.getElementById("inpHomePage").value;
 	var bolRemember=document.getElementById("chkRemember").checked;
 
 
 	SetCookie("inpName",strName,365);
-	SetCookie("inpEmail",strEmail,365);
-	SetCookie("inpHomePage",strHomePage,365);
 	SetCookie("chkRemember",bolRemember,365);
 
 }

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:5:{s:72:"D:\phpStudy2\WWW\myblog\public/../application/home\view\index_index.html";i:1489114620;s:38:"../application/home/layout/layout.html";i:1487733496;s:43:"../application/home/view/public_header.html";i:1487733496;s:44:"../application/home/view/public_navmenu.html";i:1489050187;s:43:"../application/home/view/public_footer.html";i:1487566584;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:5:{s:72:"D:\phpStudy2\WWW\myblog\public/../application/home\view\index_index.html";i:1489136586;s:38:"../application/home/layout/layout.html";i:1487733496;s:43:"../application/home/view/public_header.html";i:1487733496;s:44:"../application/home/view/public_navmenu.html";i:1489050187;s:43:"../application/home/view/public_footer.html";i:1489137212;}*/ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
 <head>
@@ -89,18 +89,10 @@
 					</ul>
 				</dd>
 			</dl>
-			<dl class="function" id="divComments">
-				<dt class="function_t">最新留言</dt>
-				<dd class="function_c">
-					<ul>
-						<?php if(is_array($commentList) || $commentList instanceof \think\Collection || $commentList instanceof \think\Paginator): $i = 0; $__LIST__ = $commentList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$item): $mod = ($i % 2 );++$i;?>
-							<li style="text-overflow:ellipsis;">	
-								<a href="javascript:void(0)" title="<?php echo $item['create_time']; ?> post by 卢松松博客"><?php echo $item['content']; ?></a>
-							</li>
-						<?php endforeach; endif; else: echo "" ;endif; ?>
-					</ul>
-				</dd>
-			</dl>
+
+			<!-- 最新留言 -->
+       		<?php echo widget('Comment/lastCommentList'); ?>
+
 			<dl class="function" id="divLinkage">
 				<dt class="function_t">友情链接</dt>
 				<dd class="function_c">
@@ -113,49 +105,20 @@
 					</ul>
 				</dd>
 			</dl>
-			<dl class="function" id="divMisc">
-				<dt class="function_t">分享到：</dt>
-				<dd class="function_c">
-					<ul>
-						<li><img src="images/weixin.jpg" height="110" width="110" border="0" alt="你我网微信公众平台" title="微信扫一扫，关注圈圈的最新消息。" /></li>
-					</ul>
-				</dd>
-			</dl>
 		</div>
-		<div id="divBottom">
-          <h3 id="BlogCopyRight">陕ICP备11002139号-1</h3>
-			<h4 id="BlogPowerBy">Powered By <a href="http://www.rainbowsoft.org/" title="RainbowSoft Studio Z-Blog" target="_blank">Z-Blog</a>　本站遵循<a rel="license" target="_blank" title="署名-非商业性使用-禁止演绎 3.0 中国大陆许可协议" href="http://creativecommons.org/licenses/by-nc-nd/3.0/cn/"> CC BY-NC-ND 3.0 CN协议 </a>。</h4>
-		</div><div class="clear"></div>
-		</div>
-		<div class="clear"></div>
-	</div>
-	<div class="clear"></div>
+		
+		
+
+<div id="divBottom">
+          <h3 id="BlogCopyRight"><?php echo $siteInfo['site_coypright']; ?></h3>
+            <h4 id="BlogPowerBy">Powered By 
+                <a href="javascript:void(0)" title="<?php echo $siteInfo['site_name']; ?>" target="_blank"><?php echo $siteInfo['site_name']; ?></a>　
+                本站遵循<a rel="license" target="_blank" title="署名-非商业性使用-禁止演绎 3.0 中国大陆许可协议" href="http://creativecommons.org/licenses/by-nc-nd/3.0/cn/"> CC BY-NC-ND 3.0 CN协议 </a>。</h4>
+        </div><div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
 </div>
-<!-- dd BEGIN -->
-<script language="JavaScript1.2">
-var typ=["marginTop","marginLeft"],rangeN=10,timeout=0; 
-function shake(o,end){ 
-	var range=Math.floor(Math.random()*rangeN); 
-	var typN=Math.floor(Math.random()*typ.length); 
-	o["style"][typ[typN]]=""+range+"px"; 
-	var shakeTimer=setTimeout(function(){shake(o,end)},timeout); 
-	o[end]=function(){clearTimeout(shakeTimer)}; 
-} 
-  </script>
-<!-- dd END -->
 </body>
-</html><!-- 16ms -->
-
-
 </html>
-
-<script language="JavaScript1.2">
-var typ=["marginTop","marginLeft"],rangeN=10,timeout=0; 
-function shake(o,end){ 
-	var range=Math.floor(Math.random()*rangeN); 
-	var typN=Math.floor(Math.random()*typ.length); 
-	o["style"][typ[typN]]=""+range+"px"; 
-	var shakeTimer=setTimeout(function(){shake(o,end)},timeout); 
-	o[end]=function(){clearTimeout(shakeTimer)}; 
-} 
-</script>

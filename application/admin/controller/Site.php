@@ -98,10 +98,15 @@ class Site extends AdminCommon{
 		//判断是否存在
 		$condition = ['key'=>$item['key']];
 		$info = model('site')->where($condition)->find();
-		if($info && $info->value != $item['value']){
+		$res  = true;
+		if($info){
 
-			$info->value = $item['value'];
-			$res = $info->save();
+			if($info->value != $item['value']){
+
+				$info->value = $item['value'];
+				$res = $info->isUpdate(true)->save();
+			}	
+			
 		}else{
 
 			$res = model('site')->data($item)->isUpdate(false)->save();
