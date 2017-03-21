@@ -17,6 +17,7 @@
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="selected-all"></th>
+							<th>页面标识</th>
 							<th>标题</th>
 							<th>创建时间</th>
 							<th>更新时间</th>
@@ -29,6 +30,7 @@
 						<volist name="list" id="item">
 						<tr>
 							<td><input type="checkbox" value="<{$item.p_id}>" name="id[]"></td>
+							<td><{$item.alias}></td>
 							<td><{$item.title}></td>
 							<td><{$item.create_time}></td>
 							<td><{$item.update_time}></td>

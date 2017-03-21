@@ -2,49 +2,51 @@
 
 namespace app\admin\controller;
 
-use think\Validate;
-
 use app\common\controller\AdminCommon;
+use think\Validate;
 
 /**
  *  单页面 管理
  */
-class Page extends AdminCommon{
+class Page extends AdminCommon {
 
-	public function index(){
+	public function index() {
 
 		$this->getIndexData();
 
 		return $this->fetch();
 	}
 
-	public function _validate(){
+	public function _validate() {
 
 		$validate = new Validate([
+			'alias' => 'require',
 			'title' => 'require',
-			'content' => 'require'
-		],[
+			'content' => 'require',
+		], [
+			'alias' => '页面名称不能为空',
 			'title' => '请输入标题',
-			'content' => '内容不能为空'
+			'content' => '内容不能为空',
 		]);
 
 		$res = $validate->check($_POST);
 
-		if(!$res){
+		if (!$res) {
 
-			return ['error'=>1,'msg'=>$validate->getError()];
+			return ['error' => 1, 'msg' => $validate->getError()];
 		}
 
 		return true;
 	}
 
-	public function _saveData($model){
+	public function _saveData($model) {
 
 		$data = [
-			'title' => I('post.title','','trim'),
-			'content' => I('post.content','','htmlspecialchars'),
-			'sort' => I('post.sort',255,'intval'),
-			'status' => I('post.status',1,'intval')
+			'alias' => I('post.alias', '', 'trim'),
+			'title' => I('post.title', '', 'trim'),
+			'content' => I('post.content', '', 'htmlspecialchars'),
+			'sort' => I('post.sort', 255, 'intval'),
+			'status' => I('post.status', 1, 'intval'),
 		];
 
 		return $model->save($data);

@@ -37,14 +37,9 @@
                     <!-- AD END -->
                 </h6>
             </div>
-            <ul class="msg mutuality">
-                <li class="tbname">相关文章:</li>
-                <li class="msgarticle">
-                    <volist name="otherArtList" id="art">
-                        <p><a  href="<{:url('index/article',array('id'=>$art['a_id']))}>"><{$art.title}></a>&nbsp;&nbsp;(<{$art.create_time}>)</p>
-                    </volist>
-                </li>
-            </ul>
+            
+            <!-- 相关文章 -->
+            <{:widget('Article/otherArticle',['info'=>$info])}>
 
             <ul  class="msg msghead">
                 <li class="tbname">留言列表:</li>
@@ -71,63 +66,18 @@
                     <li class="msgarticle"><{$item.content}></li>
                 </ul>
             </volist>
-
-            <div class="post" id="divCommentPost">
-                <p class="posttop">
-                    <a name="comment">发表留言:</a>
-                    <small><a rel="nofollow" id="cancel-reply" href="#divCommentPost" style="display:none;">取消回复</a></small>
-                </p>
-                <form id="frmSumbit" target="_self" method="post" action="<{:url('index/post')}>" >
-                <input type="hidden" id="inpId"  value="<{$info.a_id}>" />
-                <input type="hidden" id="inpRevID" value="0">
-                <p>
-                    <input type="text" name="nick_name" id="inpName" class="text" value="" size="28" tabindex="1" /> 
-                    <label for="inpName">昵称（必填）</label>
-                </p>
-                <p><input type="text" name="verify" id="inpVerify" class="text" value="" size="28" tabindex="4" /> <label for="inpVerify">验证（必填）</label> 
-                <{:captcha_img()}>
-                </p>
-                <p><label for="txaArticle">正文（必填）(留言最长字数:1000)</label></p>
-                <p><textarea name="content" id="txaArticle"  class="text" cols="50" rows="4" tabindex="5" ></textarea></p>
-                <p><input name="btnSumbit" type="submit" tabindex="6" value="提交" onclick="JavaScript:return VerifyMessage()" class="button" /> 
-                <input type="checkbox" name="chkRemember" value="1" id="chkRemember" /> 
-                <label for="chkRemember">记住我,下次回复时不用重新输入个人信息</label></p>
-                </form>
-                <p class="postbottom">◎欢迎参与讨论，请在这里发表您的看法、交流您的观点。</p>
-                <script language="JavaScript" type="text/javascript">LoadRememberInfo();</script>
-            </div>	
+            
+            <!-- 发表留言 -->
+           <{:widget('Comment/addComment',['aid'=>$info['a_id']])}>
         </div>
         <div id="divSidebar">
-
-        <dl class="function" id="divSearchPanel">
-            <dt class="function_t">搜索</dt>
-            <dd class="function_c">
-            <div>
-                <div style="padding:0.5em 0 0.5em 1em;">
-                    <form method="post" action="<{:url('index/index')}>">
-                        <input type="text" name="keyword" value="<{$keyword|default=''}>" id="edtSearch" size="12"> 
-                        <input type="submit" value="提交" name="btnPost" id="btnPost">
-                    </form>
-                </div>
-            </div>
-            </dd>
-        </dl>
+        
+        <!-- 文章搜索表单 -->
+        <{:widget('Article/searchForm')}>
 
         <!-- 最新留言 -->
         <{:widget('Comment/lastCommentList')}>
 
 
         </div>
-        <div id="divBottom">
-          <h3 id="BlogCopyRight">陕ICP备11002139号-1</h3>
-            <h4 id="BlogPowerBy">Powered By <a href="http://www.rainbowsoft.org/" title="RainbowSoft Studio Z-Blog" target="_blank">Z-Blog</a>　本站遵循<a rel="license" target="_blank" title="署名-非商业性使用-禁止演绎 3.0 中国大陆许可协议" href="http://creativecommons.org/licenses/by-nc-nd/3.0/cn/"> CC BY-NC-ND 3.0 CN协议 </a>。</h4>
-        </div>
-        <div class="clear"></div>
-    </div>
-    <div class="clear"></div>
-    </div>
-    <div class="clear"></div>
-</div>
-
-</body>
-</html>
+        

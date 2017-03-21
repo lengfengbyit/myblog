@@ -32,19 +32,9 @@
 		<div class="pagination"><{$page}></div>
 		</div>
 		<div id="divSidebar">
-			<dl class="function" id="divSearchPanel">
-				<dt class="function_t">搜索</dt>
-				<dd class="function_c">
-					<div>
-					    <div style="padding:0.5em 0 0.5em 1em;">
-					        <form method="post" action="<{:url('index/index')}>">
-		                        <input type="text" name="keyword" value="<{$keyword|default=''}>" id="edtSearch" size="12"> 
-		                        <input type="submit" value="提交" name="btnPost" id="btnPost">
-		                    </form>
-					    </div>
-					</div>
-				</dd>
-			</dl>
+			<!-- 文章搜索表单 -->
+        	<{:widget('Article/searchForm',['keyword'=>$keyword])}>
+			
 			<dl class="function" id="divTags">
 				<dt class="function_t">按标签浏览</dt>
 				<dd class="function_c">

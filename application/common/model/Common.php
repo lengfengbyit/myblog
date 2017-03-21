@@ -4,16 +4,16 @@ namespace app\common\model;
 
 use think\Model;
 
-class Common extends Model{
+class Common extends Model {
 
-	public function getField(){
+	public function getField() {
 
-		if(empty($this->field)){
+		if (empty($this->field)) {
 
 			$this->field = $this->db(false)->getTableInfo('', 'fields');
 		}
 
-		return $this->field ;
+		return $this->field;
 	}
 
 	/**
@@ -21,17 +21,18 @@ class Common extends Model{
 	 * @param  array  $setting [设置字段默认值]
 	 * @return [type]          [description]
 	 */
-	public function initField($setting=[]){
+	public function initField($setting = []) {
 
 		$res = [];
 
 		$field = $this->getField();
 
 		foreach ($field as $k => $v) {
-			
+
 			$res[$v] = '';
 		}
 
-		return array_merge($res,$setting);
+		return array_merge($res, $setting);
 	}
+
 }

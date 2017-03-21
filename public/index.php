@@ -13,15 +13,15 @@
 
 // 定义应用目录
 define('APP_PATH', __DIR__ . '/../application/');
-define('DOMAIN','http://myblog.com/');
+define('DOMAIN', 'http://myblog.com/');
 define('ROOT_PATH', __DIR__ . '/');
-define('STATIC_URL',DOMAIN . 'static/');
-define('ADMIN_STATIC_URL',STATIC_URL . 'admin/');
-define('HOME_STATIC_URL',STATIC_URL . 'home/');
-define('COMMON_STATIC_URL',STATIC_URL . 'common/');
+define('STATIC_URL', DOMAIN . 'static/');
+define('ADMIN_STATIC_URL', STATIC_URL . 'admin/');
+define('HOME_STATIC_URL', STATIC_URL . 'home/');
+define('COMMON_STATIC_URL', STATIC_URL . 'common/');
 define('UPLOAD_PATH', __DIR__ . '/static/upload/');
 define('UPLOAD_URL', STATIC_URL . 'upload/');
-define('CONF_PATH',__DIR__ . '/../config/');
+define('CONF_PATH', __DIR__ . '/../config/');
 define('RUNTIME_PATH', ROOT_PATH . '../runtime/');
 
 // 加载框架引导文件

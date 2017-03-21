@@ -1,0 +1,8 @@
+<ul class="msg mutuality">
+    <li class="tbname">相关文章:</li>
+    <li class="msgarticle">
+        <volist name="otherArtList" id="art">
+            <p><a  href="<{:url('index/article',array('id'=>$art['a_id']))}>"><{$art.title}></a>&nbsp;&nbsp;(<{$art.create_time}>)</p>
+        </volist>
+    </li>
+</ul>

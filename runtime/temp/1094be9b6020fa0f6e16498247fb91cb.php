@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:5:{s:72:"D:\phpStudy2\WWW\myblog\public/../application/home\view\index_index.html";i:1489136586;s:38:"../application/home/layout/layout.html";i:1487733496;s:43:"../application/home/view/public_header.html";i:1487733496;s:44:"../application/home/view/public_navmenu.html";i:1489050187;s:43:"../application/home/view/public_footer.html";i:1489137212;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:5:{s:72:"D:\phpStudy2\WWW\myblog\public/../application/home\view\index_index.html";i:1490003131;s:38:"../application/home/layout/layout.html";i:1487733496;s:43:"../application/home/view/public_header.html";i:1487733496;s:44:"../application/home/view/public_navmenu.html";i:1489050187;s:43:"../application/home/view/public_footer.html";i:1490001965;}*/ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
 <head>
@@ -63,19 +63,9 @@
 		<div class="pagination"><?php echo $page; ?></div>
 		</div>
 		<div id="divSidebar">
-			<dl class="function" id="divSearchPanel">
-				<dt class="function_t">搜索</dt>
-				<dd class="function_c">
-					<div>
-					    <div style="padding:0.5em 0 0.5em 1em;">
-					        <form method="post" action="<?php echo url('index/index'); ?>">
-		                        <input type="text" name="keyword" value="<?php echo (isset($keyword) && ($keyword !== '')?$keyword:''); ?>" id="edtSearch" size="12"> 
-		                        <input type="submit" value="提交" name="btnPost" id="btnPost">
-		                    </form>
-					    </div>
-					</div>
-				</dd>
-			</dl>
+			<!-- 文章搜索表单 -->
+        	<?php echo widget('Article/searchForm',['keyword'=>$keyword]); ?>
+			
 			<dl class="function" id="divTags">
 				<dt class="function_t">按标签浏览</dt>
 				<dd class="function_c">

@@ -1,0 +1,24 @@
+<div class="post" id="divCommentPost">
+    <p class="posttop">
+        <a name="comment">发表留言:</a>
+        <small><a rel="nofollow" id="cancel-reply" href="#divCommentPost" style="display:none;">取消回复</a></small>
+    </p>
+    <form id="frmSumbit" target="_self" method="post" action="<{:url('index/post')}>" >
+    <input type="hidden" id="inpId"  value="<{$aid}>" />
+    <input type="hidden" id="inpRevID" value="0">
+    <p>
+        <input type="text" name="nick_name" id="inpName" class="text" value="" size="28" tabindex="1" /> 
+        <label for="inpName">昵称（必填）</label>
+    </p>
+    <p><input type="text" name="verify" id="inpVerify" class="text" value="" size="28" tabindex="4" /> <label for="inpVerify">验证（必填）</label> 
+    <{:captcha_img()}>
+    </p>
+    <p><label for="txaArticle">正文（必填）(留言最长字数:1000)</label></p>
+    <p><textarea name="content" id="txaArticle"  class="text" cols="50" rows="4" tabindex="5" ></textarea></p>
+    <p><input name="btnSumbit" type="submit" tabindex="6" value="提交" onclick="JavaScript:return VerifyMessage()" class="button" /> 
+    <input type="checkbox" name="chkRemember" value="1" id="chkRemember" /> 
+    <label for="chkRemember">记住我,下次回复时不用重新输入个人信息</label></p>
+    </form>
+    <p class="postbottom">◎欢迎参与讨论，请在这里发表您的看法、交流您的观点。</p>
+    <script language="JavaScript" type="text/javascript">LoadRememberInfo();</script>
+</div>  

@@ -1,0 +1,42 @@
+<layout name="../application/home/layout/layout.html"/>
+<body class="single">
+<div id="divAll">
+    <div id="divPage">
+    <div id="divMiddle">
+
+        <!-- 导航菜单 -->
+        <include file="../application/home/view/public_navmenu.html" />
+
+        <div id="divMain">
+            <div class="post single-post cate2 auth1">
+                <h4 class="post-date"><{$info.create_time}></h4>
+                <h2 class="post-title"><{$info.title}></h2>
+                <div class="post-body"><{$info.content|htmlspecialchars_decode}></div>
+            </div>
+
+            <!-- 相关文章 -->
+            <{:widget('Article/otherArticle')}>
+            
+        </div>
+        <div id="divSidebar">
+
+        <dl class="function" id="divSearchPanel">
+            <dt class="function_t">搜索</dt>
+            <dd class="function_c">
+            <div>
+                <div style="padding:0.5em 0 0.5em 1em;">
+                    <form method="post" action="<{:url('index/index')}>">
+                        <input type="text" name="keyword" value="<{$keyword|default=''}>" id="edtSearch" size="12"> 
+                        <input type="submit" value="提交" name="btnPost" id="btnPost">
+                    </form>
+                </div>
+            </div>
+            </dd>
+        </dl>
+
+        <!-- 最新留言 -->
+        <{:widget('Comment/lastCommentList')}>
+
+
+        </div>
+        
