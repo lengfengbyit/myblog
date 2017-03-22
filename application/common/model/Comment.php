@@ -21,7 +21,24 @@ class Comment extends Common {
 	 */
 	public function getRevNickNameAttr($value, $data) {
 
+		if ($data['rev_cid'] <= 0) {
+			return '';
+		}
 		return $this->where(['c_id' => $data['rev_cid']])->value('nick_name');
+	}
+
+	/**
+	 * 获得留言回复
+	 * @param  [type] $value [description]
+	 * @param  [type] $data  [description]
+	 * @return [type]        [description]
+	 */
+	public function getRevContentAttr($value, $data) {
+
+		/*if ($data['c_id'] <= 0) {
+			return '';
+		}*/
+		return $this->where(['rev_cid' => $data['c_id']])->value('content');
 	}
 
 	/**

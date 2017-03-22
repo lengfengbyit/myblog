@@ -54,13 +54,13 @@ class Article extends Common {
 	 * 获得文章信息（包括关联信息）
 	 * @return [type] [description]
 	 */
-	public function getArtFullList($param = []) {
+	public function getArtFullList($param = [], $page = 10) {
 
 		$condition = ['is_show' => 1];
 		if (isset($param['condition'])) {
 			$condition = array_merge($condition, $param['condition']);
 		}
-		$articleList = $this->where($condition)->order('a_id desc')->paginate($param['page']);
+		$articleList = $this->where($condition)->order('a_id desc')->paginate($page);
 
 		// 标签获取模式 ： 0：数组模式，1:字符串模式
 		$tag_mode = isset($param['tag_mode']) ? intval($param['tag_mode']) : 0;

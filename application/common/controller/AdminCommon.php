@@ -2,22 +2,21 @@
 
 namespace app\common\controller;
 
+use app\common\controller\Auth;
 use think\Controller;
 use think\Request;
-use app\common\controller\Auth;
 
 abstract class AdminCommon extends Controller {
 
-
 	//不做登录判断的action
-	protected $ignore_action = ['login','logout']; 
+	protected $ignore_action = ['login', 'logout'];
 
 	// 忽略不存在模型的控制器
 	protected $ignore_controller = ['Index'];
 
 	protected $req;
 
-	protected $initDefaultField = ['status'=>1,'sort'=>255];
+	protected $initDefaultField = ['status' => 1, 'sort' => 255];
 
 	protected $model;
 
@@ -28,22 +27,23 @@ abstract class AdminCommon extends Controller {
 		'del' => '删除',
 		'delselect' => '删除选中',
 		'clearall' => '清空',
-		'createnav' => '创建菜单'
+		'createnav' => '创建菜单',
+		'updatemenuurl' => '更新菜单链接',
 	];
 
 	//日志状态
-	protected $logStatus = ['success'=>'成功','error'=>'失败'];
+	protected $logStatus = ['success' => '成功', 'error' => '失败'];
 
-	public function __construct(Request $req){
+	public function __construct(Request $req) {
 
 		parent::__construct($req);
 
 		$this->req = $req;
 
 		//判断是否登录
-		if( !session('?admin_info') && 
-			!in_array( $req->action() ,$this->ignore_action ) ){
-		
+		if (!session('?admin_info') &&
+			!in_array($req->action(), $this->ignore_action)) {
+
 			$this->redirect('Index/login');
 		}
 
@@ -52,18 +52,18 @@ abstract class AdminCommon extends Controller {
 
 		$controller = $this->req->controller();
 
-		if(!$this->model && !in_array($controller, $this->ignore_controller)){
+		if (!$this->model && !in_array($controller, $this->ignore_controller)) {
 
 			$this->model = model($controller);
 		}
 	}
 
 	// 检查用户权限
-	private function check_premission(){
+	private function check_premission() {
 
 		//忽略判断的规则
 		$ingore_rule = [
-			'index_main','index_login','index_logout','index_index'
+			'index_main', 'index_login', 'index_logout', 'index_index',
 		];
 		$params = $this->req->param();
 		$controller = strtolower($this->req->controller());
@@ -71,8 +71,8 @@ abstract class AdminCommon extends Controller {
 		$rules = [
 			$controller . '_' . $action,
 		];
-		
-		if(in_array($rules[0], $ingore_rule)){
+
+		if (in_array($rules[0], $ingore_rule)) {
 
 			return true;
 		}
@@ -81,16 +81,16 @@ abstract class AdminCommon extends Controller {
 		foreach ($params as $key => $value) {
 			$paramStr .= '_' . $key . '_' . $value;
 		}
-		if($paramStr != ''){
+		if ($paramStr != '') {
 
 			$rules[] = $rules[0] . $paramStr;
 		}
 
-		$auth=new Auth();  
-		$res = $auth->check($rules,session('admin_info.a_id'),1,'rule'); 
+		$auth = new Auth();
+		$res = $auth->check($rules, session('admin_info.a_id'), 1, 'rule');
 
-		if(!$res){
- 			echo '权限不足，无法访问';die;
+		if (!$res) {
+			echo '权限不足，无法访问';die;
 		}
 	}
 
@@ -107,60 +107,60 @@ abstract class AdminCommon extends Controller {
 	 * 获得index页面 数据
 	 * @return [type] [description]
 	 */
-	protected function getIndexData($condition=[],$order='',$model='',$page=10){
-	
+	protected function getIndexData($condition = [], $order = '', $model = '', $page = 10) {
+
 		$list = $this->model->where($condition)->order($order)->paginate($page);
 		$page = $list->render();
-		
-		$this->assign('list',$list);
-		$this->assign('page',$page);
+		$this->assign('list', $list);
+		$this->assign('page', $page);
 	}
 
 	/**
 	 * 返回ajax 数据
 	 * @return [type] [description]
 	 */
-	protected function ajaxReturn($jsonData=[]){
+	protected function ajaxReturn($jsonData = []) {
 
+		// return $jsonData;
 		echo json_encode($jsonData);die;
-	}	
+	}
 
 	/**
 	 * 新增操作
 	 */
-	public function add(){
-		
+	public function add() {
+
 		$model = $this->model;
 
-		if(!isPost()){
+		if (!isPost()) {
 
 			$info = $model->initField($this->initDefaultField);
 
-			$this->assign('url',url('add'));
-			$this->assign('info',$info);
+			$this->assign('url', url('add'));
+			$this->assign('info', $info);
 
 			$this->trigger('formGetBefore');
 
 			return $this->fetch('form');
-		}else{
-			
+		} else {
+
 			$res = $this->trigger('_validate');
-			if( $res !== true){
+			if ($res !== true) {
 
 				$this->ajaxReturn($res);
 			}
-			
-			$this->trigger('addPostBefore',$model);
 
-			if($this->_saveData($model)){
+			$this->trigger('addPostBefore', $model);
+
+			if ($this->_saveData($model)) {
 
 				$id = $model->getData($model->getPk());
-				$this->addLog($id,'success');
-				$this->ajaxReturn(['error'=>0,'msg'=>'添加成功']);
-			}else{
+				$this->addLog($id, 'success');
+				$this->ajaxReturn(['error' => 0, 'msg' => '添加成功']);
+			} else {
 
-				$this->addLog(false,'error');
-				$this->ajaxReturn(['error'=>1,'msg'=>'添加失败,请重新添加']);
+				$this->addLog(false, 'error');
+				$this->ajaxReturn(['error' => 1, 'msg' => '添加失败,请重新添加']);
 			}
 		}
 	}
@@ -169,41 +169,41 @@ abstract class AdminCommon extends Controller {
 	 * 编辑操作
 	 * @return [type] [description]
 	 */
-	public function edit(){ 
+	public function edit() {
 
-		$id = I('id',0,'intval');
+		$id = I('id', 0, 'intval');
 		$model = $this->model;
 		$info = $model->get($id);
-		
-		if(!isPost()){
 
-			if($id <= 0){
+		if (!isPost()) {
 
-				$this->ajaxReturn(['error'=>1,'msg'=>'数据不存在']);
+			if ($id <= 0) {
+
+				$this->ajaxReturn(['error' => 1, 'msg' => '数据不存在']);
 			}
 
-			$this->trigger('formGetBefore',$model);
+			$this->trigger('formGetBefore', $model);
 
-			$this->assign('url',url('edit',array('id'=>$id)));
-			$this->assign('info',$info);
+			$this->assign('url', url('edit', array('id' => $id)));
+			$this->assign('info', $info);
 			return $this->fetch('form');
-		}else{
+		} else {
 
 			// $res = $this->_validate();
 			$res = $this->trigger('_validate');
-			if( $res !== true){
+			if ($res !== true) {
 
 				$this->ajaxReturn($res);
 			}
-			
-			if($this->_saveData($info)){
 
-				$this->addLog($id,'success');
-				$this->ajaxReturn(['error'=>0,'msg'=>'编辑成功']);
-			}else{
+			if ($this->_saveData($info)) {
 
-				$this->addLog($id,'error');
-				$this->ajaxReturn(['error'=>1,'msg'=>'编辑失败']);
+				$this->addLog($id, 'success');
+				$this->ajaxReturn(['error' => 0, 'msg' => '编辑成功']);
+			} else {
+
+				$this->addLog($id, 'error');
+				$this->ajaxReturn(['error' => 1, 'msg' => '编辑失败']);
 			}
 		}
 	}
@@ -212,12 +212,12 @@ abstract class AdminCommon extends Controller {
 	 * 删除
 	 * @return [type]            [description]
 	 */
-	public function del(){
+	public function del() {
 
-		$id = I('id',0,'intval');
-		$page = I('page',1,'intval');
+		$id = I('id', 0, 'intval');
+		$page = I('page', 1, 'intval');
 
-		if($id == 0){
+		if ($id == 0) {
 
 			$this->error('请求参数错误');
 		}
@@ -225,20 +225,20 @@ abstract class AdminCommon extends Controller {
 		$model = $this->model;
 
 		$modelData = null;
-		if(method_exists($this, 'delAfter')){
+		if (method_exists($this, 'delAfter')) {
 			$modelData = $model->get($id);
 		}
-		
-		if($model->get($id)->delete()){
 
-			$this->trigger('delAfter',$modelData);
-			
-			$this->addLog($id,'success');
-			$this->ajaxReturn(['error'=>0,'msg'=>'删除成功']);
-		}else{
+		if ($model->get($id)->delete()) {
 
-			$this->addLog($id,'error');
-			$this->ajaxReturn(['error'=>1,'msg'=>'删除失败']);
+			$this->trigger('delAfter', $modelData);
+
+			$this->addLog($id, 'success');
+			$this->ajaxReturn(['error' => 0, 'msg' => '删除成功']);
+		} else {
+
+			$this->addLog($id, 'error');
+			$this->ajaxReturn(['error' => 1, 'msg' => '删除失败']);
 		}
 	}
 
@@ -246,13 +246,13 @@ abstract class AdminCommon extends Controller {
 	 * 删除选中项
 	 * @return [type] [description]
 	 */
-	public function delSelect(){
+	public function delSelect() {
 
 		$param = request()->param();
 
 		$ids = implode(',', $param['id']);
 
-		if(empty($ids)){
+		if (empty($ids)) {
 
 			$this->error('没有选中数据');
 		}
@@ -262,39 +262,39 @@ abstract class AdminCommon extends Controller {
 		$condition = $model->getPk() . " in ({$ids})";
 
 		$list = null;
-		if(method_exists($this, 'delSelectAfter')){
+		if (method_exists($this, 'delSelectAfter')) {
 
 			$list = $model->all($ids);
 		}
 		$res = $model->where($condition)->delete();
 
-		if($res){
+		if ($res) {
 
-			$this->trigger('delSelectAfter',$list);
+			$this->trigger('delSelectAfter', $list);
 
-			$this->addLog($ids,'success');
-			$this->success('删除成功','index');
-		}else{
+			$this->addLog($ids, 'success');
+			$this->success('删除成功', 'index');
+		} else {
 
-			$this->addLog($ids,'error');
+			$this->addLog($ids, 'error');
 			$this->error('删除失败');
 		}
 	}
 
 	/**
-	 * 添加日志 
+	 * 添加日志
 	 * @param [type] $data [description]
 	 */
-	protected function addLog($id,$res){
+	protected function addLog($id, $res) {
 
 		$action = $this->req->action();
 		$statusText = $this->logStatus[$res];
 		$actionText = $this->logType[$action];
 
 		$title = $actionText;
-		if($id){
+		if ($id) {
 
-			$title .= "数据，id:" . $id . "," ;
+			$title .= "数据，id:" . $id . ",";
 		}
 		$title .= $statusText;
 
@@ -303,7 +303,7 @@ abstract class AdminCommon extends Controller {
 			'table' => $this->req->controller(),
 			'action' => $action,
 			'admin_id' => session('admin_info.a_id'),
-			'create_time' => time()
+			'create_time' => time(),
 		];
 
 		return model('Log')->insert($data);
@@ -315,12 +315,12 @@ abstract class AdminCommon extends Controller {
 	 * @param  [type] $param  [参数]
 	 * @return [type]         [description]
 	 */
-	protected function trigger($method,$param = null){
+	protected function trigger($method, $param = null) {
 
-		if(method_exists($this, $method)){
+		if (method_exists($this, $method)) {
 
 			return $this->$method($param
-				);
+			);
 		}
 
 		return false;

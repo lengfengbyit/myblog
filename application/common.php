@@ -202,3 +202,12 @@ function delDir2($dir) {
 		}
 	}
 }
+
+/**
+ * 清除文件缓存
+ * @return [type] [description]
+ */
+function clearCacheFile() {
+
+	return delDir(CACHE_PATH);
+}

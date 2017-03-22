@@ -43,6 +43,8 @@ layui.use(['jquery','form'], function(){
 
 		return false;
 	});
+	
+	
 
 	if(typeof lay_other_func == 'function'){
 

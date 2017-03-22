@@ -1,0 +1,50 @@
+<layout name="../application/common/layout/index.html"/>
+
+<div class="item-main">
+    <blockquote class="layui-elem-quote">
+        <a href="javascript:;" class="layui-btn layui-btn-small" id="delSelect">
+            <i class="layui-icon">&#xe640;</i> 删除选中
+        </a>
+    </blockquote>
+    <fieldset class="layui-elem-field">
+        <legend>留言列表</legend>
+        <div class="layui-field-box">
+            <form action="<{:url('delSelect')}>" method="post" id="delSelectForm">
+                <table class="site-table table-hover">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selected-all"></th>
+                            <th>文章标题</th>
+                            <th>用户昵称</th>
+                            <th>留言内容</th>
+                            <th>留言时间</th>
+                            <th>用户IP</th>
+                            <th>回复内容</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <volist name="list" id="item">
+                        <tr>
+                            <td><input type="checkbox" value="<{$item.c_id}>" name="id[]"></td>
+                            <td><{$item.article.title}></td>
+                            <td><{$item.nick_name}></td>
+                            <td><{$item.content}></td>
+                            <td><{$item.create_time}></td>
+                            <td><{$item.ip}></td>
+                            <td><{$item.revContent}></td>
+                            <td>
+                                <a href="javascript:;" data-url="<{:url('del',array('id'=>$item['c_id'],'page'=>$Think.get.page))}>"  class="layui-btn layui-btn-danger layui-btn-mini del">删除</a>
+                            </td>
+                        </tr>
+                        </volist>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </fieldset>
+    <div class="item-table-page">
+        <div class="pagination"><{$page}></div>
+    </div>
+</div>
+        

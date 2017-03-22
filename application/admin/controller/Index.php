@@ -66,7 +66,7 @@ class Index extends AdminCommon {
 	 */
 	public function clearCache() {
 
-		if (delDir(CACHE_PATH)) {
+		if (cache(null)) {
 
 			$this->ajaxReturn(['error' => 0, 'msg' => '缓存清除成功']);
 		} else {

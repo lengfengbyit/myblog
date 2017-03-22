@@ -15,7 +15,7 @@ class Index extends HomeCommon {
 
 		// 文章列表
 		$condition = $this->_getListCondition();
-		$articleList = Model('article')->getArtFullList(['condition' => $condition, 'page' => 10]);
+		$articleList = Model('article')->getArtFullList(['condition' => $condition]);
 		$page = $articleList->render();
 
 		// 标签列表

@@ -48,9 +48,4 @@ function RevertComment(i){
 //重写GetComments，防止评论框消失
 function GetComments(logid,page){
 	$('span.commentspage').html("Waiting...");
-	$.get(str00+"zb_system/cmd.asp?act=CommentGet&logid="+logid+"&page="+page, function(data){
-		$("#cancel-reply").click();
-		$('#AjaxCommentBegin').nextUntil('#AjaxCommentEnd').remove();
-		$('#AjaxCommentEnd').before(data);
-	});
 }

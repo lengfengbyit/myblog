@@ -506,11 +506,7 @@ function GetComments(logid,page){
 
 	 $('span.commentspage').html("Waiting...");
 
-	$.get(bloghost+"zb_system/cmd.asp?act=CommentGet&logid="+logid+"&page="+page, function(data){
-	  $('#AjaxCommentBegin').nextUntil('#AjaxCommentEnd').remove();
-	  $('#AjaxCommentBegin').after(data);
-	});
-
+     
 }
 //*********************************************************
 

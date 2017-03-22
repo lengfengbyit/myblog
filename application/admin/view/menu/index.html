@@ -8,6 +8,9 @@
 		<a href="javascript:;" class="layui-btn layui-btn-small" id="delSelect">
 			<i class="layui-icon">&#xe640;</i> 删除选中
 		</a>
+		<a href="javascript:;" class="layui-btn layui-btn-small" id="updateMenuUrl" data-url="<{:url('updateMenuUrl')}>">
+			<i class="layui-icon">&#x1002;</i> 更新菜单链接
+		</a>
 		<eq name="type" value="0">
 		<a href="javascript:;" class="layui-btn layui-btn-small" id="createNav" data-url="<{:url('createNav')}>">
 			<i class="layui-icon">&#x1002;</i> 创建菜单
@@ -70,7 +73,7 @@ layui.use(['layer'], function() {
 		layer = parent.layer === undefined ? layui.layer : parent.layer;
 
 	//创建导航菜单
-	$('#createNav').on('click',function(){ 
+	$('#createNav,#updateMenuUrl').on('click',function(){ 
 
 		$.get(this.dataset.url, function(data) {
 			
@@ -83,7 +86,7 @@ layui.use(['layer'], function() {
 
 			if(data.error == 0){
 
-				parent.location.reload(true);
+				location.reload(true);
 			}
 		});
 	})

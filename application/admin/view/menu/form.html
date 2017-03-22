@@ -84,7 +84,7 @@
 	<div class="layui-form-item">
 		<label class="layui-form-label">是否可用</label>
 		<div class="layui-input-block">
-			<input type="checkbox" name="status" value="<{$info.status}>" lay-skin="switch" <eq name="info.status" value="1">checked</eq> title="是否可用">
+			<input type="checkbox" id="switch_status" name="status" value="<{$info.status}>" lay-skin="switch" lay-filter="status" <eq name="info.status" value="1">checked</eq> title="是否可用">
 		</div>
 	</div>
 	<div class="layui-form-item">
@@ -108,6 +108,14 @@ function lay_other_func($,layer,form){
 		$('.url-type').hide();
 		$('.url-type-' + data.value).show();
 	})
+
+	form.on('switch(status)',function(data){
+		if(data.elem.checked){
+			$('#switch_status').val(1);
+		}else{
+			$('#switch_status').val(0);
+		}
+	});
 
 	function showUrlTypeGroup(){
 
